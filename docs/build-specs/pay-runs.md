@@ -43,5 +43,12 @@ draft → warning · approved → info · paid → success · void → secondary
 ## Out of scope
 Tax, filings, bank files, journal entries, payment recording per person, time entries.
 
+## Built and proven — 2026-09-23
+- The new-run form lists everyone employed with their pay basis at the period's end and says who gets a computed base line and who goes on with a note (no pay recorded, another currency, paid on invoices, no schedule, hours or days not keyed). A September draft for Priya computed her base (52,000 ÷ 12 = 4,333.33); keying tax 700, employer pension 200 and expenses 45.50 recomputed the item and the run by trigger (net 3,678.83); the same through the agents' door as flat `kind:code:amount:description` text, a bad kind refused with the sentence.
+- Lifecycle: paying a draft → 409; approve froze it (keying → 409); back to draft; approve; paid with a date; void or delete once paid → 409; the log carries the run number, period and head-count, never a total. Priya's payslip appeared once approved. A second draft: a person removed, added back, the draft deleted — which found a defect in the frozen-run guard (a deleted draft's cascade saw no status) fixed by `db/010` (additive).
+- The accounting feed `GET /api/v1/pay-runs?period=2026-10` with an `api` token answered `hr.pay-runs/1` with the run, its totals, items and lines; no token → 401; an `mcp`-scope token → 401; a `read` person on the runs screen → 403.
+- 375 px and 1280 px: no horizontal scroll on the five screens.
+- Left behind: PR-0001 (paid, Priya, September 2026) and a draft for October.
+
 ## Open Questions
 - (none)
