@@ -49,7 +49,7 @@ Schema tables: `members`, `department_members`, `departments` (mirror, read only
 ## Files (exactly these)
 - `html/people/index.php` · `view.php` · `employment/form.php` · `employment/save.php` · `employment/end.php`
 - `app/features/people/queries.php` · `app/features/people/present.php`
-- `app/views/people/page.php` · `view.php` · `partials/cards.php` · `card.php` · `overview.php` · `employment.php` · `employment-form.php` · `history.php` · `saved.php`
+- `app/views/people/page.php` · `view.php` · `partials/cards.php` · `card.php` · `overview.php` · `employment.php` · `employment-form.php` · `history.php` (no `saved.php`: a save navigates to the record with `saved_go()`, which is the exemplar's rule for every form)
 
 ## Query functions (signatures fixed)
 - `find_people(PDO, array $filters, string $sort = 'name', int $page = 1, int $per = 24): array` (rows from `mcp_members` joined to `mcp_employment_profiles`; total for pagination)
@@ -75,6 +75,13 @@ Schema tables: `members`, `department_members`, `departments` (mirror, read only
 
 ## Out of scope for this slice
 - Inviting, directory edits, memberships (directory slice); pay (compensation slice); leave and reviews tabs (their slices render into the tabs this slice leaves as empty states).
+
+## Built and proven — 2026-09-23 (the exemplar)
+- List: 14 cards, search + four filters + sort re-fetch only `#people-list-results` (Pattern B, `HX-Target`); the region also listens to `employmentProfileChanged` / `memberChanged`; the JSON branch answers `present_person_card` rows under an action token.
+- View: six tabs, each a full screen render with `?tab=` (Pattern B), tabs hidden by the gates (a `read` person sees the owner's Overview and History only; her own record shows every tab, without the end form); `screen.view` is logged with `after.tab` (HA3's evidence).
+- Form and save: 14 fields, validation re-renders the form at 422 with the errors block; create granted the year's leave (16 + 8 days for a 15 March starter — the pro-rata rule); the log names which fields changed and never a home-contact value; a partial update from the kernel's actions server (`_partial=1`, JSON, action token) changed one field and kept the rest; ending cancels future leave, answers 409 when already ended; an agent's form → 422; a `read` person → 403 on the form and the save; the sidebar hides Pay runs and Settings from her.
+- 375 px and 1280 px: no horizontal scroll on the list, the view and the form.
+- Rules the exemplar sets for every later slice: query functions take PDO and explicit values; reads through `mcp_*` views except the form's base-table read behind the gate; `refuse()` for every refusal (HTML flash / JSON error alike); `saved_go()` after a save (HX-Location + HX-Trigger, JSON `location`, browser redirect); every form field id `{entity}-form-field-{name}`; the manifest's param name and the column name both accepted where they differ (`manager` / `manager_member_id`) so agents' partial updates fill correctly; an ended record stays ended through the form.
 
 ## Open Questions
 - (none)
