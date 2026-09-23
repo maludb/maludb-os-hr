@@ -1,0 +1,3 @@
+# HR — installed for www-data (crontab -u www-data -e). The two timers are systemd units in deploy/.
+# The year's leave allowance, 1 January 00:10 (idempotent; also runnable by hand).
+10 0 1 1 * /usr/bin/php /srv/apps/hr/bin/grant_annual_leave.php >> /var/log/hr-cron.log 2>&1

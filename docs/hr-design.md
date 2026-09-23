@@ -183,4 +183,9 @@ screen that publishes the two MCP URLs, the health endpoint, `maludb-os.json` ve
 ## 8. State
 
 - 2026-09-23: Phase 0 and Phase 1 written; the nine migrations apply clean on an empty database and the
-  gate proof passes (`docs/hr-design.md` §3 rules, tested as the three roles). Awaiting the checkpoint.
+  gate proof passes (`docs/hr-design.md` §3 rules, tested as the three roles). **Checkpoint approved** the
+  same day ("Approved and continue").
+- 2026-09-23: **Phase 2 built and proven** (`build-specs/sso-shell.md`, "Proof"): sign-on receivers, the
+  mirror and its timer, the ingest bridge, the shell with the command bar through the kernel's chat
+  endpoint, the dashboard, `/activity`, `/api/v1/health`; Apache `hr.subello.com` + loopback :8180; HR is
+  application 39 in the kernel (catalog `hr`, kind `ours`). Next: Phase 3, slice 1 (people).

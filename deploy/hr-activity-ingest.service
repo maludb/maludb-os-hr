@@ -1,0 +1,10 @@
+[Unit]
+Description=HR activity log -> the tenant's MaluDB (one batch)
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/apps/hr/mcp
+ExecStart=/srv/apps/hr/mcp/venv/bin/python /srv/apps/hr/mcp/activity_ingest.py

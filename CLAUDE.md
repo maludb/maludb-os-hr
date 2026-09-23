@@ -33,7 +33,14 @@ the slice specs in `docs/build-specs/` (Phase 2 first: `sso-shell.md`; the exemp
   kernel's `config/.env` and never written down.
 
 ## Environment facts
-- Repo and install path `/srv/apps/hr` (`/srv/apps/<catalog_key>` for every application from us).
+- Repo and install path `/srv/apps/hr` (`/srv/apps/<catalog_key>` for every application from us). Apache: `deploy/apache-hr.conf` =
+  `/etc/apache2/sites-available/hr.conf` (public `hr.subello.com`, loopback :8180); timers `hr-directory-sync` and `hr-activity-ingest`
+  installed from `deploy/`. In the kernel HR is application 39, catalog `hr` (kind `ours`); its token is in `config/.env`.
+- **State (2026-09-23):** Phase 0–1 approved; Phase 2 (sso, mirror, shell) built and proven — see `docs/hr-design.md` §8 and
+  `docs/build-specs/sso-shell.md` "Proof". Next: Phase 3 slice 1, people (`docs/build-specs/people.md`), the exemplar.
+- Proving sign-on by hand: mint with the kernel's functions (`sso_launch_url()` as member 1 in a CLI with `$_SESSION` set), present
+  the token to `http://127.0.0.1/sso?…` with `Host: hr.subello.com`; the headless-browser check is `node` + `/var/www/web/node_modules/playwright`
+  with `--host-resolver-rules=MAP hr.subello.com 127.0.0.1`.
 - Database `subello_hr` on the office's PostgreSQL 17 (roles `hr_rw`, `hr_records_ro`, `hr_activity_ro`).
 - Ports are configuration: `APP_INTERNAL_PORT`, `MCP_RECORDS_PORT`, `MCP_ACTIVITY_PORT` in `config/.env`
   (the kernel owns 8080, 8811–8816). The kernel's internal API: `OS_INTERNAL_URL=http://127.0.0.1:8080`.

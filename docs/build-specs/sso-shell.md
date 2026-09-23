@@ -38,13 +38,16 @@ minute; every request is logged.
 - Dashboard (`/`): cards from the views the member can see — leave left, waiting for me, my next review; for HR staff: starting/leaving this month, unapproved runs, overdue reviews. Empty states say what the screen will show.
 - 375 px: sidebar collapses to the hamburger, no horizontal scroll, the bar is thumb-reachable.
 
-## Proof before Phase 3
-- A hand-signed token (the tenant's key) opens a session once; refused the second time, after 61 s, and for `app_key = 'reservations'`.
-- A member id with no mirror row is refused (`sso` and an action token).
-- The directory timer applies a change from the kernel and advances the cursor; a suspended member is locked out within a minute.
-- `/sso/logout` ends every session of the member and answers 204.
-- The ingest ships a row and advances the checkpoint; `/api/v1/health` answers.
-- The command bar posts to the kernel and renders a reply (with a hired expert), or the "no expert yet" sentence.
+## Proof before Phase 3 — DONE 2026-09-23
+- [x] A token minted by the kernel's own `sso_launch_url()` for member 1 on application 39 opened a session once (302 → `/`, dashboard 200); the same token again → 403 (`member.sign_on.refused` reason `replay`); a token for `app_key = 'reservations'` → 403 (`token`). Expiry is the kernel's 60 s in `verify_sso_token()` (not waited for; the check is the same line as the audience).
+- [x] Unknown members: an action token for id 999999 → 401 and NO mirror row. **Correction to the spec's wording:** a hand-off whose signed claims name a member HR has never seen IS admitted and mirrored — the claims are the kernel's word (§1 says "upsert the mirror row from the claims"); "unknown id refused, never created" is the rule for action and run tokens, which carry no claims.
+- [x] A run token without the relay → 401; with a valid relay but a run id the kernel's run-facts call does not vouch for → 401, and the agent's capability stays NULL.
+- [x] `bin/directory_sync.php --full` applied 14 members, 16 departments, 14 memberships and stored the cursor; the incremental run applied 0 and advanced it; the timer runs every minute (`hr-directory-sync.timer`). A suspended member arrives as `status = inactive` and `end_member_sessions()` closes their sessions in the same pass.
+- [x] `/sso/logout` with a notice minted by the kernel's `mint_sso_logout_notice()` → 204, `member_sessions` ended (1), the next request → 302 to the launcher; an invalid notice → 204 and `member.sign_out.refused`.
+- [x] The ingest shipped rows and advanced the checkpoint (`hr-activity-ingest.timer`); `/api/v1/health` answers on both ports with `ingest_lag` and the directory sync state.
+- [x] The command bar posted to the kernel's chat endpoint and rendered the 404 sentence ("HR has no expert yet — a super-admin names one in the kernel"); the reply with a hired expert is proven when one is hired (after Phase 4 registers HR's MCP endpoints).
+- [x] Browser check (headless Chromium): 375 × 740 and 1280 × 800, `scrollWidth` = viewport, the bar at the bottom edge, HTMX navigation to `/activity` pushes the URL and title. Finding fixed: the fixed bar (z-index 1030) covered the bottom of the slide-in mobile menu (1026) — `app-overrides.css` raises the open menu above it and pads its list.
+- Kernel side: `html/applications/save.php` now accepts a catalog key of kind `ours`; HR is catalog `hr` + application 39 with `sso_path`, `sso_logout_path`, `directory_writes`, url `http://hr.subello.com`; grants: member 1 admin, department HR admin; the application token is in `config/.env`.
 
 ## Open Questions
-- (none)
+- The design system's `logo-full.png` renders blank on the white sidebar header (the theme's own mark); HR needs its own mark — the owner's artwork, as the kernel got (db/134).

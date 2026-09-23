@@ -1,0 +1,18 @@
+[Unit]
+Description=HR activity MCP server (FastMCP, loopback :8822)
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/apps/hr/mcp
+ExecStart=/srv/apps/hr/mcp/venv/bin/python /srv/apps/hr/mcp/activity_server.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target
