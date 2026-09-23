@@ -74,7 +74,8 @@ $color = employment_status_color($e['status'] ?? null);
                         echo '<div class="text-center text-muted py-5" id="person-view-' . e($tabView) . '-empty">' . e(ucfirst($tabView)) . ' arrives with its slice.</div>';
                     } else {
                         echo view($partial, ['person' => $person, 'staff' => $staff, 'me' => $me, 'history' => $history, 'tz' => $tz, 'canSeePay' => $canSeePay,
-                            'leave' => $leave ?? ['balances' => [], 'requests' => []], 'canRequestFor' => $canRequestFor ?? false]);
+                            'leave' => $leave ?? ['balances' => [], 'requests' => []], 'canRequestFor' => $canRequestFor ?? false,
+                            'pay' => $pay ?? ['current' => null, 'changes' => []], 'reviews' => $reviews ?? []]);
                     }
                     ?>
                 </div>

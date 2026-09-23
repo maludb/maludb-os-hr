@@ -32,5 +32,11 @@ Read: the Pay tab renders only when `hr_can_see_pay(person)` (own, manager, hr).
 ## Out of scope
 Bank details; approval workflows for a change (a person with `hr` records it; the log is the trail); currency conversion.
 
+## Built and proven — 2026-09-23
+- A salary recorded from 15 March (52,000 USD) became the rate in force; the monthly estimate (4,333.33) and the history read from `mcp_current_pay` and `mcp_compensation_changes`; a future raise from 1 January 2027 was recorded, a second change on the same date refused (422), the future one deleted, the one in force refused deletion (409).
+- The log carries the date, type, currency and reason and never the rate. Priya (read) sees her own Pay tab and cannot open the change form (403); the owner's own record has no pay and says so.
+- 375 px and 1280 px: no horizontal scroll on the Pay tab and the form.
+- Left behind: Priya's salary change of 2026-03-15 ("new hire").
+
 ## Open Questions
 - (none)

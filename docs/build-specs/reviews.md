@@ -37,5 +37,10 @@ scheduled → info · in_progress → warning · completed → success · cancel
 ## Out of scope
 Goals as records; 360 feedback; templates; reminders by mail.
 
+## Built and proven — 2026-09-23
+- A probation review scheduled for Priya with the reviewer defaulting to her manager (the owner); unseen by her while unshared (404); completing before writing refused (422); writing set a rating and moved it to in progress; completing with "share" set `shared_at`; Priya then saw it, commented once, and a second comment was refused (409); writing a completed review refused (409); Priya scheduling refused (403). Through the agents' door, `review_schedule` answered `record_id`-able JSON and a partial `review_save` changed one field and kept the rest.
+- 375 px and 1280 px: no horizontal scroll on the list, the view and the two forms.
+- Left behind: reviews 1 (completed, shared, commented) and 2 (in progress) for Priya.
+
 ## Open Questions
 - (none)

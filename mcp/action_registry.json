@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-09-23T03:16:14+00:00",
+    "generated_at": "2026-09-23T03:27:01+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -107,7 +107,7 @@
                 "person",
                 "effective_date"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "departments-list": {
@@ -161,8 +161,8 @@
                 "status",
                 "period"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "pay-run-add": {
             "screen": "pay-run-add",
@@ -174,7 +174,7 @@
                 "period_end",
                 "pay_date"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "pay-run-view": {
@@ -183,7 +183,7 @@
             "section": "Pay runs",
             "when": "one run: every person, their lines, the totals, what is missing a base line",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "pay-run-item-edit": {
@@ -192,7 +192,7 @@
             "section": "Pay runs",
             "when": "to key one person's hours and lines on a draft run",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "payslip": {
@@ -203,8 +203,8 @@
             "params": [
                 "run"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "leave-requests": {
             "screen": "leave-requests",
@@ -294,8 +294,8 @@
                 "reviewer",
                 "overdue"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "review-add": {
             "screen": "review-add",
@@ -307,7 +307,7 @@
                 "kind",
                 "due_date"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "review-view": {
@@ -316,7 +316,7 @@
             "section": "Reviews",
             "when": "one review, and to comment on their own",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "review-edit": {
@@ -325,7 +325,7 @@
             "section": "Reviews",
             "when": "to write a review: rating, summary, strengths, improvements, goals",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "leave-types": {
@@ -808,7 +808,7 @@
             "approval": "other",
             "log_event": "compensation_change.create",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "compensation_change_delete": {
             "action": "compensation_change_delete",
@@ -827,7 +827,7 @@
             "approval": "deletion",
             "log_event": "compensation_change.delete",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "department_create": {
             "action": "department_create",
@@ -957,7 +957,7 @@
             "approval": null,
             "log_event": "pay_run.create",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_item_save": {
             "action": "pay_run_item_save",
@@ -1000,7 +1000,7 @@
             "approval": null,
             "log_event": "pay_run_item.save",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_add_person": {
             "action": "pay_run_add_person",
@@ -1025,7 +1025,7 @@
             "approval": null,
             "log_event": "pay_run_item.add",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_remove_person": {
             "action": "pay_run_remove_person",
@@ -1044,7 +1044,7 @@
             "approval": null,
             "log_event": "pay_run_item.remove",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_approve": {
             "action": "pay_run_approve",
@@ -1063,7 +1063,7 @@
             "approval": "other",
             "log_event": "pay_run.approve",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_unapprove": {
             "action": "pay_run_unapprove",
@@ -1082,7 +1082,7 @@
             "approval": null,
             "log_event": "pay_run.unapprove",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_mark_paid": {
             "action": "pay_run_mark_paid",
@@ -1107,7 +1107,7 @@
             "approval": "other",
             "log_event": "pay_run.pay",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_void": {
             "action": "pay_run_void",
@@ -1132,7 +1132,7 @@
             "approval": "other",
             "log_event": "pay_run.void",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "pay_run_delete": {
             "action": "pay_run_delete",
@@ -1151,7 +1151,7 @@
             "approval": "deletion",
             "log_event": "pay_run.delete",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "leave_request_create": {
             "action": "leave_request_create",
@@ -1373,7 +1373,7 @@
             "approval": null,
             "log_event": "review.schedule",
             "who": "hr, manager",
-            "built": false
+            "built": true
         },
         "review_save": {
             "action": "review_save",
@@ -1422,7 +1422,7 @@
             "approval": null,
             "log_event": "review.save",
             "who": "reviewer, hr",
-            "built": false
+            "built": true
         },
         "review_complete": {
             "action": "review_complete",
@@ -1447,7 +1447,7 @@
             "approval": "other",
             "log_event": "review.complete",
             "who": "reviewer, hr",
-            "built": false
+            "built": true
         },
         "review_comment": {
             "action": "review_comment",
@@ -1472,7 +1472,7 @@
             "approval": null,
             "log_event": "review.comment",
             "who": "own (once shared)",
-            "built": false
+            "built": true
         },
         "review_cancel": {
             "action": "review_cancel",
@@ -1497,7 +1497,7 @@
             "approval": null,
             "log_event": "review.cancel",
             "who": "hr, reviewer",
-            "built": false
+            "built": true
         },
         "leave_type_save": {
             "action": "leave_type_save",
