@@ -1,6 +1,6 @@
-"""Shared DB helpers for the read MCP servers.
+"""Shared DB helpers for HR's read MCP servers (copied from the kernel, mcp-and-api.md §1).
 
-Each server connects with its own read-only role (app_records_ro / app_activity_ro),
+Each server connects with its own read-only role (hr_records_ro / hr_activity_ro),
 which can touch nothing but the mcp_* views and the mcp_resolve_token() function. A bearer
 token is resolved to (member_id, role); every query runs with app.member_id / app.role set
 so the views scope to that member — exactly what the member sees in the UI.
@@ -26,6 +26,8 @@ request_member_id: contextvars.ContextVar[int | None] = contextvars.ContextVar("
 request_role: contextvars.ContextVar[str] = contextvars.ContextVar("role", default="anon")
 # The agent run a request belongs to, when its bearer is an agent RUN token (else None).
 request_run_id: contextvars.ContextVar[int | None] = contextvars.ContextVar("run_id", default=None)
+# The raw bearer the caller presented (a run token is shown to the kernel's run-facts call).
+request_token: contextvars.ContextVar[str] = contextvars.ContextVar("token", default="")
 
 
 def load_env() -> dict[str, str]:
@@ -140,18 +142,22 @@ def relay_signature(token: str) -> str | None:
 
 
 async def resolve_token(pool: asyncpg.Pool, raw_token: str) -> tuple[int, str] | None:
-    """Resolve a bearer token to (member_id, role). Accepts a personal MCP access token
-    (via the mcp_resolve_token function) or the assistant's signed action token."""
+    """Resolve a bearer token to (member_id, role). A personal `mcp_` token resolves through
+    mcp_resolve_token(); the tenant's signed action or run token (ACTION_TOKEN_KEY) names a member
+    the mirror must already know and admit — an unknown id is refused, never created."""
     if not raw_token:
         return None
     async with pool.acquire() as con:
-        row = await con.fetchrow("SELECT member_id, member_role FROM mcp_resolve_token($1)", hash_token(raw_token))
+        row = await con.fetchrow("SELECT member_id, member_role FROM mcp_resolve_token($1, 'mcp')", hash_token(raw_token))
     if row is not None:
         return int(row["member_id"]), str(row["member_role"])
     mid = verify_action_token(raw_token)
     if mid is not None:
         async with pool.acquire() as con:
-            role = await con.fetchval("SELECT mcp_member_role($1)", mid)
+            # the read role sees the directory through mcp_members only, and only as an admitted member
+            async with con.transaction():
+                await con.execute("SELECT set_config('app.member_id', $1, true)", str(mid))
+                role = await con.fetchval("SELECT business_role FROM mcp_members WHERE member_id = $1", mid)
         if role:
             return mid, str(role)
     return None

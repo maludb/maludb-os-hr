@@ -1,0 +1,1677 @@
+{
+ "schema": "maludb-os.registry/1",
+ "app_key": "hr",
+ "name": "HR",
+ "base_url": "http://127.0.0.1:8180",
+ "records_url": "http://hr.subello.com/mcp/records",
+ "resolve": {
+  "person": {
+   "tool": "find_people",
+   "query_param": "q",
+   "id_field": "member_id",
+   "label_field": "display_name",
+   "params": [
+    "person",
+    "member",
+    "manager",
+    "reviewer",
+    "member_id"
+   ]
+  },
+  "department": {
+   "tool": "find_departments",
+   "query_param": "q",
+   "id_field": "department_id",
+   "label_field": "name",
+   "params": [
+    "department",
+    "parent",
+    "department_id"
+   ]
+  },
+  "pay_run": {
+   "tool": "find_pay_runs",
+   "query_param": "q",
+   "id_field": "pay_run_id",
+   "label_field": "run_no",
+   "params": [
+    "pay_run"
+   ]
+  },
+  "leave_request": {
+   "tool": "find_leave_requests",
+   "query_param": "q",
+   "id_field": "leave_request_id",
+   "label_field": "display_name",
+   "params": [
+    "leave_request"
+   ]
+  },
+  "leave_type": {
+   "tool": "find_leave_types",
+   "query_param": "q",
+   "id_field": "leave_type_id",
+   "label_field": "name",
+   "params": [
+    "leave_type"
+   ]
+  },
+  "review": {
+   "tool": "find_reviews",
+   "query_param": "q",
+   "id_field": "review_id",
+   "label_field": "display_name",
+   "params": [
+    "review"
+   ]
+  }
+ },
+ "registry": {
+  "generated_from": "docs/business-os-action-manifest.md",
+  "generated_at": "2026-09-23T03:36:29+00:00",
+  "screens": {
+   "dashboard": {
+    "screen": "dashboard",
+    "url": "/",
+    "section": "Home",
+    "when": "their HR home: leave left this year, requests waiting for them, their next review, and for HR staff who starts and leaves this month, unapproved runs and overdue reviews",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "activity": {
+    "screen": "activity",
+    "url": "/activity",
+    "section": "Home",
+    "when": "recent activity in HR, or one record's history",
+    "params": [
+     "entity_type",
+     "entity_id"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "settings": {
+    "screen": "settings",
+    "url": "/settings/",
+    "section": "Home",
+    "when": "the business's HR settings: currency, timezone, work days",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "tokens": {
+    "screen": "tokens",
+    "url": "/settings/tokens/",
+    "section": "Home",
+    "when": "their own access tokens for the two MCP servers and the API",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "people-list": {
+    "screen": "people-list",
+    "url": "/people/",
+    "section": "People",
+    "when": "who works here: the directory with employment beside it",
+    "params": [
+     "q",
+     "department",
+     "status",
+     "type",
+     "employed"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "person-view": {
+    "screen": "person-view",
+    "url": "/people/{id}",
+    "section": "People",
+    "when": "one person: directory, employment, pay, leave, reviews, history",
+    "params": [
+     "tab"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "person-invite": {
+    "screen": "person-invite",
+    "url": "/people/new",
+    "section": "People",
+    "when": "to invite someone into the business: the kernel sends the invitation",
+    "params": [
+     "email",
+     "department",
+     "business_role"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "person-directory-edit": {
+    "screen": "person-directory-edit",
+    "url": "/people/directory/{id}/edit",
+    "section": "People",
+    "when": "to change a person's directory facts: name, job title, phone, timezone, external, status, role",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "employment-edit": {
+    "screen": "employment-edit",
+    "url": "/people/employment/{id}/edit",
+    "section": "People",
+    "when": "to create or change a person's employment record",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "compensation-add": {
+    "screen": "compensation-add",
+    "url": "/people/compensation/new",
+    "section": "People",
+    "when": "to record a pay change for someone",
+    "params": [
+     "person",
+     "effective_date"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "departments-list": {
+    "screen": "departments-list",
+    "url": "/departments/",
+    "section": "Departments",
+    "when": "the departments, who manages each and how many are in each",
+    "params": [
+     "q",
+     "archived"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "department-view": {
+    "screen": "department-view",
+    "url": "/departments/{id}",
+    "section": "Departments",
+    "when": "one department: its people and agents, admins, sub-departments, who is off",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "department-add": {
+    "screen": "department-add",
+    "url": "/departments/new",
+    "section": "Departments",
+    "when": "to create a department in the kernel",
+    "params": [
+     "name",
+     "parent"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "department-edit": {
+    "screen": "department-edit",
+    "url": "/departments/{id}/edit",
+    "section": "Departments",
+    "when": "to rename a department, re-parent it, name its manager or describe it",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "pay-runs": {
+    "screen": "pay-runs",
+    "url": "/payruns/",
+    "section": "Pay runs",
+    "when": "the pay runs: drafts, approved, paid, void",
+    "params": [
+     "status",
+     "period"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "pay-run-add": {
+    "screen": "pay-run-add",
+    "url": "/payruns/new",
+    "section": "Pay runs",
+    "when": "to start a pay run for a period",
+    "params": [
+     "period_start",
+     "period_end",
+     "pay_date"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "pay-run-view": {
+    "screen": "pay-run-view",
+    "url": "/payruns/{id}",
+    "section": "Pay runs",
+    "when": "one run: every person, their lines, the totals, what is missing a base line",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "pay-run-item-edit": {
+    "screen": "pay-run-item-edit",
+    "url": "/payruns/items/{id}/edit",
+    "section": "Pay runs",
+    "when": "to key one person's hours and lines on a draft run",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "payslip": {
+    "screen": "payslip",
+    "url": "/payruns/mine",
+    "section": "Pay runs",
+    "when": "their own payslips",
+    "params": [
+     "run"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "leave-requests": {
+    "screen": "leave-requests",
+    "url": "/leave/",
+    "section": "Leave",
+    "when": "leave requests: theirs, their people's, what awaits them",
+    "params": [
+     "status",
+     "person",
+     "department",
+     "period",
+     "awaiting_me"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "leave-request-add": {
+    "screen": "leave-request-add",
+    "url": "/leave/new",
+    "section": "Leave",
+    "when": "to request leave, or record it for someone",
+    "params": [
+     "type",
+     "start",
+     "end",
+     "person"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "leave-request-view": {
+    "screen": "leave-request-view",
+    "url": "/leave/{id}",
+    "section": "Leave",
+    "when": "one request: the days, the balance it draws on, its flags, its decision",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "leave-calendar": {
+    "screen": "leave-calendar",
+    "url": "/leave/calendar",
+    "section": "Leave",
+    "when": "who is off, by day",
+    "params": [
+     "from",
+     "to",
+     "department"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "leave-balances": {
+    "screen": "leave-balances",
+    "url": "/leave/balances/",
+    "section": "Leave",
+    "when": "balances per person and type for a year",
+    "params": [
+     "year",
+     "department",
+     "person"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "leave-balance-adjust": {
+    "screen": "leave-balance-adjust",
+    "url": "/leave/balances/new",
+    "section": "Leave",
+    "when": "to adjust someone's balance or carry days over",
+    "params": [
+     "person",
+     "leave_type",
+     "year"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "reviews-list": {
+    "screen": "reviews-list",
+    "url": "/reviews/",
+    "section": "Reviews",
+    "when": "reviews due, in progress or done — theirs to write, or their own",
+    "params": [
+     "status",
+     "person",
+     "reviewer",
+     "overdue"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "review-add": {
+    "screen": "review-add",
+    "url": "/reviews/new",
+    "section": "Reviews",
+    "when": "to schedule a review for someone",
+    "params": [
+     "person",
+     "kind",
+     "due_date"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "review-view": {
+    "screen": "review-view",
+    "url": "/reviews/{id}",
+    "section": "Reviews",
+    "when": "one review, and to comment on their own",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "review-edit": {
+    "screen": "review-edit",
+    "url": "/reviews/{id}/edit",
+    "section": "Reviews",
+    "when": "to write a review: rating, summary, strengths, improvements, goals",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "leave-types": {
+    "screen": "leave-types",
+    "url": "/settings/leave-types/",
+    "section": "Settings — leave types and holidays",
+    "when": "the leave types, allowances and approval rules",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "leave-type-add": {
+    "screen": "leave-type-add",
+    "url": "/settings/leave-types/new",
+    "section": "Settings — leave types and holidays",
+    "when": "to add a leave type",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "leave-type-edit": {
+    "screen": "leave-type-edit",
+    "url": "/settings/leave-types/{id}/edit",
+    "section": "Settings — leave types and holidays",
+    "when": "to change or archive a leave type",
+    "params": [],
+    "built": true,
+    "stub": false
+   },
+   "holidays": {
+    "screen": "holidays",
+    "url": "/settings/holidays/",
+    "section": "Settings — leave types and holidays",
+    "when": "the public holidays",
+    "params": [
+     "year"
+    ],
+    "built": true,
+    "stub": false
+   },
+   "holiday-add": {
+    "screen": "holiday-add",
+    "url": "/settings/holidays/new",
+    "section": "Settings — leave types and holidays",
+    "when": "to add a holiday",
+    "params": [
+     "date",
+     "name"
+    ],
+    "built": true,
+    "stub": false
+   }
+  },
+  "actions": {
+   "settings_save": {
+    "action": "settings_save",
+    "section": "Home",
+    "endpoint": "/settings/save.php",
+    "params": [
+     {
+      "name": "currency",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "timezone",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "work_days",
+      "required": false,
+      "repeated": false,
+      "hint": "ISO weekdays 1 to 7 comma-separated"
+     },
+     {
+      "name": "employee_no_prefix",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": null,
+    "log_event": "settings.save",
+    "who": "hr",
+    "built": true
+   },
+   "token_mint": {
+    "action": "token_mint",
+    "section": "Home",
+    "endpoint": "/settings/tokens/mint.php",
+    "params": [
+     {
+      "name": "label",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "scope",
+      "required": false,
+      "repeated": false,
+      "hint": "mcp or api"
+     }
+    ],
+    "undo": "revoke it",
+    "confirm": false,
+    "approval": null,
+    "log_event": "token.mint",
+    "who": "all (own)",
+    "built": true
+   },
+   "token_revoke": {
+    "action": "token_revoke",
+    "section": "Home",
+    "endpoint": "/settings/tokens/revoke.php",
+    "params": [
+     {
+      "name": "token",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": null,
+    "confirm": true,
+    "approval": null,
+    "log_event": "token.revoke",
+    "who": "own",
+    "built": true
+   },
+   "person_invite": {
+    "action": "person_invite",
+    "section": "People",
+    "endpoint": "/people/invite.php",
+    "params": [
+     {
+      "name": "email",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "business_role",
+      "required": true,
+      "repeated": false,
+      "hint": "user or dept_admin"
+     },
+     {
+      "name": "department",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "message",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "— (the kernel sent the invitation)",
+    "confirm": true,
+    "approval": "external_send",
+    "log_event": "person.invite",
+    "who": "hr, admin",
+    "built": true
+   },
+   "person_directory_update": {
+    "action": "person_directory_update",
+    "section": "People",
+    "endpoint": "/people/directory/save.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "display_name",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "job_title",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "phone",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "timezone",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "is_external",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "status",
+      "required": false,
+      "repeated": false,
+      "hint": "active or suspended"
+     },
+     {
+      "name": "business_role",
+      "required": false,
+      "repeated": false,
+      "hint": "user or dept_admin"
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": "other",
+    "log_event": "person.directory_update",
+    "who": "hr, admin",
+    "built": true
+   },
+   "membership_save": {
+    "action": "membership_save",
+    "section": "People",
+    "endpoint": "/people/membership-save.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "department",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "is_admin",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "is_primary",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "remove it again",
+    "confirm": false,
+    "approval": "other",
+    "log_event": "membership.save",
+    "who": "hr, admin",
+    "built": true
+   },
+   "membership_remove": {
+    "action": "membership_remove",
+    "section": "People",
+    "endpoint": "/people/membership-remove.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "department",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "add back",
+    "confirm": true,
+    "approval": "other",
+    "log_event": "membership.remove",
+    "who": "hr, admin",
+    "built": true
+   },
+   "employment_save": {
+    "action": "employment_save",
+    "section": "People",
+    "endpoint": "/people/employment/save.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "employment_type",
+      "required": false,
+      "repeated": false,
+      "hint": "employee or contractor or intern"
+     },
+     {
+      "name": "employee_no",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "manager",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "work_location",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "start_date",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "probation_end_date",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "status",
+      "required": false,
+      "repeated": false,
+      "hint": "candidate or active or on_leave"
+     },
+     {
+      "name": "weekly_hours",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "pay_schedule",
+      "required": false,
+      "repeated": false,
+      "hint": "weekly or biweekly or semimonthly or monthly"
+     },
+     {
+      "name": "personal_email",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "address",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "emergency_contact",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "birth_date",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "national_id_last4",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "notes",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": null,
+    "log_event": "employment_profile.save",
+    "who": "hr",
+    "built": true
+   },
+   "employment_end": {
+    "action": "employment_end",
+    "section": "People",
+    "endpoint": "/people/employment/end.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "end_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "reason",
+      "required": false,
+      "repeated": false,
+      "hint": "keeps the record and ends the employment"
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": true,
+    "approval": "other",
+    "log_event": "employment_profile.end",
+    "who": "hr",
+    "built": true
+   },
+   "compensation_change_save": {
+    "action": "compensation_change_save",
+    "section": "People",
+    "endpoint": "/people/compensation/save.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "effective_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "pay_type",
+      "required": true,
+      "repeated": false,
+      "hint": "salary or hourly or daily or per_invoice — a salary is per year"
+     },
+     {
+      "name": "pay_rate",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "currency",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "reason",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "delete the change",
+    "confirm": true,
+    "approval": "other",
+    "log_event": "compensation_change.create",
+    "who": "hr",
+    "built": true
+   },
+   "compensation_change_delete": {
+    "action": "compensation_change_delete",
+    "section": "People",
+    "endpoint": "/people/compensation/delete.php",
+    "params": [
+     {
+      "name": "compensation_change",
+      "required": true,
+      "repeated": false,
+      "hint": "a future-dated change only"
+     }
+    ],
+    "undo": null,
+    "confirm": true,
+    "approval": "deletion",
+    "log_event": "compensation_change.delete",
+    "who": "hr",
+    "built": true
+   },
+   "department_create": {
+    "action": "department_create",
+    "section": "Departments",
+    "endpoint": "/departments/save.php",
+    "params": [
+     {
+      "name": "name",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "description",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "parent",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "manager",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "— (archive it in the kernel)",
+    "confirm": false,
+    "approval": "other",
+    "log_event": "department.create",
+    "who": "super, hr",
+    "built": true
+   },
+   "department_update": {
+    "action": "department_update",
+    "section": "Departments",
+    "endpoint": "/departments/save.php",
+    "params": [
+     {
+      "name": "department",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "required": false,
+      "name": "name",
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "required": false,
+      "name": "description",
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "required": false,
+      "name": "parent",
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "required": false,
+      "name": "manager",
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": "other",
+    "log_event": "department.update",
+    "who": "hr, admin",
+    "built": true,
+    "partial": true
+   },
+   "pay_run_create": {
+    "action": "pay_run_create",
+    "section": "Pay runs",
+    "endpoint": "/payruns/save.php",
+    "params": [
+     {
+      "name": "period_start",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "period_end",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "pay_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "currency",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "people",
+      "required": false,
+      "repeated": true,
+      "hint": "defaults to everyone active with a pay basis in that currency"
+     },
+     {
+      "name": "note",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "delete the draft",
+    "confirm": false,
+    "approval": null,
+    "log_event": "pay_run.create",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_item_save": {
+    "action": "pay_run_item_save",
+    "section": "Pay runs",
+    "endpoint": "/payruns/items/save.php",
+    "params": [
+     {
+      "name": "pay_run_item",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "hours",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "days",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "lines",
+      "required": false,
+      "repeated": false,
+      "hint": "kind:code:amount:description each — kinds are earning deduction employer_cost reimbursement — comma-separated and replacing the keyed lines"
+     },
+     {
+      "name": "note",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": null,
+    "log_event": "pay_run_item.save",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_add_person": {
+    "action": "pay_run_add_person",
+    "section": "Pay runs",
+    "endpoint": "/payruns/items/add.php",
+    "params": [
+     {
+      "name": "pay_run",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "remove again",
+    "confirm": false,
+    "approval": null,
+    "log_event": "pay_run_item.add",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_remove_person": {
+    "action": "pay_run_remove_person",
+    "section": "Pay runs",
+    "endpoint": "/payruns/items/remove.php",
+    "params": [
+     {
+      "name": "pay_run_item",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "add back",
+    "confirm": true,
+    "approval": null,
+    "log_event": "pay_run_item.remove",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_approve": {
+    "action": "pay_run_approve",
+    "section": "Pay runs",
+    "endpoint": "/payruns/approve.php",
+    "params": [
+     {
+      "name": "pay_run",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "un-approve while unpaid",
+    "confirm": true,
+    "approval": "other",
+    "log_event": "pay_run.approve",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_unapprove": {
+    "action": "pay_run_unapprove",
+    "section": "Pay runs",
+    "endpoint": "/payruns/unapprove.php",
+    "params": [
+     {
+      "name": "pay_run",
+      "required": true,
+      "repeated": false,
+      "hint": "approved and unpaid"
+     }
+    ],
+    "undo": "approve again",
+    "confirm": false,
+    "approval": null,
+    "log_event": "pay_run.unapprove",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_mark_paid": {
+    "action": "pay_run_mark_paid",
+    "section": "Pay runs",
+    "endpoint": "/payruns/paid.php",
+    "params": [
+     {
+      "name": "pay_run",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "paid_at",
+      "required": false,
+      "repeated": false,
+      "hint": "no money moves — it records that the business paid"
+     }
+    ],
+    "undo": null,
+    "confirm": true,
+    "approval": "other",
+    "log_event": "pay_run.pay",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_void": {
+    "action": "pay_run_void",
+    "section": "Pay runs",
+    "endpoint": "/payruns/void.php",
+    "params": [
+     {
+      "name": "pay_run",
+      "required": true,
+      "repeated": false,
+      "hint": "unpaid only"
+     },
+     {
+      "name": "reason",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": null,
+    "confirm": true,
+    "approval": "other",
+    "log_event": "pay_run.void",
+    "who": "hr",
+    "built": true
+   },
+   "pay_run_delete": {
+    "action": "pay_run_delete",
+    "section": "Pay runs",
+    "endpoint": "/payruns/delete.php",
+    "params": [
+     {
+      "name": "pay_run",
+      "required": true,
+      "repeated": false,
+      "hint": "a draft only"
+     }
+    ],
+    "undo": null,
+    "confirm": true,
+    "approval": "deletion",
+    "log_event": "pay_run.delete",
+    "who": "hr",
+    "built": true
+   },
+   "leave_request_create": {
+    "action": "leave_request_create",
+    "section": "Leave",
+    "endpoint": "/leave/save.php",
+    "params": [
+     {
+      "name": "leave_type",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "start_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "end_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "half_day",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "reason",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "person",
+      "required": false,
+      "repeated": false,
+      "hint": "defaults to the caller"
+     }
+    ],
+    "undo": "cancel it",
+    "confirm": false,
+    "approval": null,
+    "log_event": "leave_request.create",
+    "who": "all (own), manager, admin, hr",
+    "built": true
+   },
+   "leave_request_decide": {
+    "action": "leave_request_decide",
+    "section": "Leave",
+    "endpoint": "/leave/decide.php",
+    "params": [
+     {
+      "name": "leave_request",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "decision",
+      "required": true,
+      "repeated": false,
+      "hint": "approve or reject"
+     },
+     {
+      "name": "note",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "override",
+      "required": false,
+      "repeated": false,
+      "hint": "approve beyond the balance — HR only"
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": "other",
+    "log_event": "leave_request.decide",
+    "who": "manager, admin, hr — never the requester",
+    "built": true
+   },
+   "leave_request_cancel": {
+    "action": "leave_request_cancel",
+    "section": "Leave",
+    "endpoint": "/leave/cancel.php",
+    "params": [
+     {
+      "name": "leave_request",
+      "required": true,
+      "repeated": false,
+      "hint": "requested or approved and not yet started"
+     }
+    ],
+    "undo": "request again",
+    "confirm": true,
+    "approval": null,
+    "log_event": "leave_request.cancel",
+    "who": "own, hr",
+    "built": true
+   },
+   "leave_balance_adjust": {
+    "action": "leave_balance_adjust",
+    "section": "Leave",
+    "endpoint": "/leave/balances/save.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "leave_type",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "year",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "accrued_days",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "carried_days",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "reason",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": true,
+    "approval": "other",
+    "log_event": "leave_balance.adjust",
+    "who": "hr",
+    "built": true
+   },
+   "leave_grant_year": {
+    "action": "leave_grant_year",
+    "section": "Leave",
+    "endpoint": "/leave/balances/grant-year.php",
+    "params": [
+     {
+      "name": "year",
+      "required": true,
+      "repeated": false,
+      "hint": "grants the allowance to everyone active who has none for it yet"
+     }
+    ],
+    "undo": null,
+    "confirm": true,
+    "approval": "other",
+    "log_event": "leave_balance.grant_year",
+    "who": "hr",
+    "built": true
+   },
+   "review_schedule": {
+    "action": "review_schedule",
+    "section": "Reviews",
+    "endpoint": "/reviews/save.php",
+    "params": [
+     {
+      "name": "person",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "kind",
+      "required": true,
+      "repeated": false,
+      "hint": "annual or probation or quarterly or other"
+     },
+     {
+      "name": "due_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "reviewer",
+      "required": false,
+      "repeated": false,
+      "hint": "defaults to the person's manager"
+     },
+     {
+      "name": "period_start",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "period_end",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "cancel it",
+    "confirm": false,
+    "approval": null,
+    "log_event": "review.schedule",
+    "who": "hr, manager",
+    "built": true
+   },
+   "review_save": {
+    "action": "review_save",
+    "section": "Reviews",
+    "endpoint": "/reviews/save.php",
+    "params": [
+     {
+      "name": "review",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "rating",
+      "required": false,
+      "repeated": false,
+      "hint": "1 to 5"
+     },
+     {
+      "name": "summary",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "strengths",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "improvements",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "goals",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": null,
+    "log_event": "review.save",
+    "who": "reviewer, hr",
+    "built": true
+   },
+   "review_complete": {
+    "action": "review_complete",
+    "section": "Reviews",
+    "endpoint": "/reviews/complete.php",
+    "params": [
+     {
+      "name": "review",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "share",
+      "required": false,
+      "repeated": false,
+      "hint": "also share it with the person"
+     }
+    ],
+    "undo": "reopen it",
+    "confirm": true,
+    "approval": "other",
+    "log_event": "review.complete",
+    "who": "reviewer, hr",
+    "built": true
+   },
+   "review_comment": {
+    "action": "review_comment",
+    "section": "Reviews",
+    "endpoint": "/reviews/comment.php",
+    "params": [
+     {
+      "name": "review",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "comment",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior",
+    "confirm": false,
+    "approval": null,
+    "log_event": "review.comment",
+    "who": "own (once shared)",
+    "built": true
+   },
+   "review_cancel": {
+    "action": "review_cancel",
+    "section": "Reviews",
+    "endpoint": "/reviews/cancel.php",
+    "params": [
+     {
+      "name": "review",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "reason",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "schedule again",
+    "confirm": true,
+    "approval": null,
+    "log_event": "review.cancel",
+    "who": "hr, reviewer",
+    "built": true
+   },
+   "leave_type_save": {
+    "action": "leave_type_save",
+    "section": "Settings — leave types and holidays",
+    "endpoint": "/settings/leave-types/save.php",
+    "params": [
+     {
+      "name": "name",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "is_paid",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "accrual_days_per_year",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "carry_over_days",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "requires_approval",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "archived",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "leave_type",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior / delete new",
+    "confirm": false,
+    "approval": null,
+    "log_event": "leave_type.save",
+    "who": "hr",
+    "built": true
+   },
+   "holiday_save": {
+    "action": "holiday_save",
+    "section": "Settings — leave types and holidays",
+    "endpoint": "/settings/holidays/save.php",
+    "params": [
+     {
+      "name": "holiday_date",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "name",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     },
+     {
+      "name": "holiday",
+      "required": false,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "restore prior / delete new",
+    "confirm": false,
+    "approval": null,
+    "log_event": "holiday.save",
+    "who": "hr",
+    "built": true
+   },
+   "holiday_delete": {
+    "action": "holiday_delete",
+    "section": "Settings — leave types and holidays",
+    "endpoint": "/settings/holidays/delete.php",
+    "params": [
+     {
+      "name": "holiday",
+      "required": true,
+      "repeated": false,
+      "hint": ""
+     }
+    ],
+    "undo": "add back",
+    "confirm": true,
+    "approval": "deletion",
+    "log_event": "holiday.delete",
+    "who": "hr",
+    "built": true
+   }
+  }
+ }
+}
