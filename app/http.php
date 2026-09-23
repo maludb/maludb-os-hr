@@ -281,6 +281,12 @@ function format_ts(?string $utc, string $tz, string $fmt = 'M j, Y g:i A'): stri
     }
 }
 
+/** A count of days for a screen: 4, 0.5, 16 — never 16.00. */
+function days_label($days): string
+{
+    return rtrim(rtrim(number_format((float) $days, 2, '.', ''), '0'), '.');
+}
+
 /** A date column in the medium format the design system fixes: Jan 15, 2026. */
 function format_date(?string $date): string
 {

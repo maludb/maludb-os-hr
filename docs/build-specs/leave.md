@@ -52,5 +52,12 @@ requested → warning · approved → success · rejected → danger · cancelle
 ## Out of scope
 Calendar blocks in any other application; notifications by mail (the kernel notifies through its own channels when it has them); accrual per month.
 
+## Built and proven — 2026-09-23
+- Settings saved (currency, time zone, work days Mon–Sat, prefix); a holiday added and removed (Pattern C row delete); a leave type added, then archived through its form.
+- Priya (capability `read`, employed, PTO 16 + sick 8 for 2026): a request over a holiday counted the work days only (Oct 12–16 with Monday a holiday → 4 days); she could not decide her own (403); the owner approved and `used_days` rose by 4. A 23-day request was recorded and flagged `over_balance`; approving it → 422 "Beyond the balance by 11 days; HR staff can override"; with `override` → approved (used 27); her cancellation of that approved, future request gave the days back (used 4). Sick leave (no approval) was approved as recorded, a half day, flagged `has_overlap` where it met the PTO. The list shows hers under "Mine"; the calendar shades the holiday and non-work days and links each day to its request; the balances page and the person's Leave tab read the same views; an adjustment set 3 carried days with a reason in the log; "Grant the year" for 2027 created balances for everyone employed and the January job found nothing left to grant (idempotent).
+- The agents' door: `leave_request_create` for Priya through an action token answered `record_id`-able JSON.
+- 375 px and 1280 px: no horizontal scroll on the seven screens (the calendar table scrolls inside its card).
+- Left behind as fixtures: Priya's leave requests 1 (approved, Oct 12–16, "SMOKE trip"), 2 (cancelled), 3 (sick, half day), 4 (requested by the agents' door, Dec 21–23); her 2026 PTO balance 16 accrued + 3 carried; the archived type `SMOKE unpaid`; settings Mon–Sat, America/New_York.
+
 ## Open Questions
 - (none)

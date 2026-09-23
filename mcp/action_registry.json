@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-09-23T03:06:29+00:00",
+    "generated_at": "2026-09-23T03:16:14+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -29,8 +29,8 @@
             "section": "Home",
             "when": "the business's HR settings: currency, timezone, work days",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "tokens": {
             "screen": "tokens",
@@ -218,8 +218,8 @@
                 "period",
                 "awaiting_me"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "leave-request-add": {
             "screen": "leave-request-add",
@@ -232,7 +232,7 @@
                 "end",
                 "person"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "leave-request-view": {
@@ -241,7 +241,7 @@
             "section": "Leave",
             "when": "one request: the days, the balance it draws on, its flags, its decision",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "leave-calendar": {
@@ -254,8 +254,8 @@
                 "to",
                 "department"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "leave-balances": {
             "screen": "leave-balances",
@@ -267,8 +267,8 @@
                 "department",
                 "person"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "leave-balance-adjust": {
             "screen": "leave-balance-adjust",
@@ -280,7 +280,7 @@
                 "leave_type",
                 "year"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "reviews-list": {
@@ -334,8 +334,8 @@
             "section": "Settings — leave types and holidays",
             "when": "the leave types, allowances and approval rules",
             "params": [],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "leave-type-add": {
             "screen": "leave-type-add",
@@ -343,7 +343,7 @@
             "section": "Settings — leave types and holidays",
             "when": "to add a leave type",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "leave-type-edit": {
@@ -352,7 +352,7 @@
             "section": "Settings — leave types and holidays",
             "when": "to change or archive a leave type",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "holidays": {
@@ -363,8 +363,8 @@
             "params": [
                 "year"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "holiday-add": {
             "screen": "holiday-add",
@@ -375,7 +375,7 @@
                 "date",
                 "name"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         }
     },
@@ -415,7 +415,7 @@
             "approval": null,
             "log_event": "settings.save",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "token_mint": {
             "action": "token_mint",
@@ -1200,7 +1200,7 @@
             "approval": null,
             "log_event": "leave_request.create",
             "who": "all (own), manager, admin, hr",
-            "built": false
+            "built": true
         },
         "leave_request_decide": {
             "action": "leave_request_decide",
@@ -1237,7 +1237,7 @@
             "approval": "other",
             "log_event": "leave_request.decide",
             "who": "manager, admin, hr — never the requester",
-            "built": false
+            "built": true
         },
         "leave_request_cancel": {
             "action": "leave_request_cancel",
@@ -1256,7 +1256,7 @@
             "approval": null,
             "log_event": "leave_request.cancel",
             "who": "own, hr",
-            "built": false
+            "built": true
         },
         "leave_balance_adjust": {
             "action": "leave_balance_adjust",
@@ -1305,7 +1305,7 @@
             "approval": "other",
             "log_event": "leave_balance.adjust",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "leave_grant_year": {
             "action": "leave_grant_year",
@@ -1324,7 +1324,7 @@
             "approval": "other",
             "log_event": "leave_balance.grant_year",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "review_schedule": {
             "action": "review_schedule",
@@ -1552,7 +1552,7 @@
             "approval": null,
             "log_event": "leave_type.save",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "holiday_save": {
             "action": "holiday_save",
@@ -1583,7 +1583,7 @@
             "approval": null,
             "log_event": "holiday.save",
             "who": "hr",
-            "built": false
+            "built": true
         },
         "holiday_delete": {
             "action": "holiday_delete",
@@ -1602,7 +1602,7 @@
             "approval": "deletion",
             "log_event": "holiday.delete",
             "who": "hr",
-            "built": false
+            "built": true
         }
     }
 }
