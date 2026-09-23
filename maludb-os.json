@@ -1,0 +1,117 @@
+{
+  "schema": "maludb-os.application/1",
+  "catalog_key": "hr",
+  "name": "HR",
+  "description": "Employment, pay records, leave and reviews for the people who work here; the one application that changes the directory.",
+  "business_area": "Human Resources",
+  "category": "other",
+  "icon": "feather-users",
+  "version": "0.1.0",
+  "criticality": "high",
+
+  "vhost": {
+    "label": "hr",
+    "document_root": "html",
+    "internal_port_env": "APP_INTERNAL_PORT"
+  },
+
+  "database": {
+    "suffix": "hr",
+    "migrations": "db",
+    "roles": { "rw": "hr_rw", "records_ro": "hr_records_ro", "activity_ro": "hr_activity_ro" }
+  },
+
+  "env": {
+    "required": ["APP_NAME", "APP_URL", "DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD",
+                 "MCP_RECORDS_DB_USER", "MCP_RECORDS_DB_PASSWORD",
+                 "MCP_ACTIVITY_DB_USER", "MCP_ACTIVITY_DB_PASSWORD",
+                 "MCP_RECORDS_PORT", "MCP_ACTIVITY_PORT", "APP_INTERNAL_PORT",
+                 "ACTION_TOKEN_KEY", "ACTIONS_RELAY_KEY",
+                 "OS_APPLICATION_TOKEN", "OS_INTERNAL_URL", "OS_LAUNCHER_URL", "APP_KEY",
+                 "MALUDB_API_URL", "MALUDB_API_TOKEN"],
+    "optional": ["MALUMAIL_API_KEY", "MAIL_FROM", "MAIL_FROM_NAME", "API_CORS_ORIGINS"]
+  },
+
+  "services": [
+    "deploy/hr-records-mcp.service",
+    "deploy/hr-activity-mcp.service",
+    "deploy/hr-activity-ingest.service",
+    "deploy/hr-activity-ingest.timer",
+    "deploy/hr-directory-sync.service",
+    "deploy/hr-directory-sync.timer"
+  ],
+
+  "endpoints": [
+    { "name": "Records MCP",  "kind": "mcp", "path": "/mcp/records",  "port_env": "MCP_RECORDS_PORT",
+      "auth_kind": "bearer", "agent_reachable": true,  "mcp_surface_version": "1.0" },
+    { "name": "Activity MCP", "kind": "mcp", "path": "/mcp/activity", "port_env": "MCP_ACTIVITY_PORT",
+      "auth_kind": "bearer", "agent_reachable": true,  "mcp_surface_version": "1.0" },
+    { "name": "Web UI",       "kind": "ui",  "path": "/",             "auth_kind": "none",
+      "agent_reachable": false },
+    { "name": "Health",       "kind": "http_api", "path": "/api/v1/health", "auth_kind": "none",
+      "agent_reachable": false },
+    { "name": "Pay runs feed", "kind": "http_api", "path": "/api/v1/pay-runs", "auth_kind": "bearer",
+      "agent_reachable": false }
+  ],
+
+  "actions": {
+    "manifest": "docs/hr-action-manifest.md",
+    "registry": "mcp/action_registry.json",
+    "base_url_env": "APP_INTERNAL_PORT"
+  },
+
+  "skills": ["skills/hr-basics", "skills/hr-leave-rules"],
+
+  "sso": { "path": "/sso", "logout_path": "/sso/logout" },
+  "directory": { "reads": true, "writes": true },
+  "assistant": { "command_bar": true, "agent": "expert" },
+
+  "agents": [
+    {
+      "key": "expert",
+      "job_description": "os/expert.md",
+      "access_capability": "write",
+      "tool_grants": {
+        "Records MCP": ["find_people", "get_person", "starters_and_leavers", "headcount", "find_departments",
+                        "get_department", "leave_balance", "find_leave_requests", "whos_off", "find_leave_types",
+                        "find_reviews", "hr_settings", "records_search"],
+        "Activity MCP": ["record_history", "actor_timeline", "directory_changes", "system_jobs"],
+        "Actions MCP": ["leave_request_create", "employment_save", "membership_save", "person_directory_update",
+                        "review_schedule", "holiday_save"]
+      },
+      "skills": ["skills/hr-basics", "skills/hr-leave-rules"]
+    },
+    {
+      "key": "leave_desk",
+      "job_description": "os/leave_desk.md",
+      "access_capability": "write",
+      "tool_grants": {
+        "Records MCP": ["find_people", "get_department", "leave_balance", "find_leave_requests", "whos_off", "find_leave_types", "hr_settings"],
+        "Activity MCP": ["record_history"],
+        "Actions MCP": ["leave_request_create", "leave_request_decide"]
+      },
+      "skills": ["skills/hr-leave-rules"]
+    }
+  ],
+
+  "approvals": [
+    { "action": "person_invite", "category": "external_send" },
+    { "action": "person_directory_update", "category": "other" },
+    { "action": "membership_save", "category": "other" },
+    { "action": "membership_remove", "category": "other" },
+    { "action": "employment_end", "category": "other" },
+    { "action": "compensation_change_save", "category": "other" },
+    { "action": "compensation_change_delete", "category": "deletion" },
+    { "action": "department_create", "category": "other" },
+    { "action": "department_update", "category": "other" },
+    { "action": "pay_run_approve", "category": "other" },
+    { "action": "pay_run_mark_paid", "category": "other" },
+    { "action": "pay_run_void", "category": "other" },
+    { "action": "pay_run_delete", "category": "deletion" },
+    { "action": "leave_request_decide", "category": "other" },
+    { "action": "leave_balance_adjust", "category": "other" },
+    { "action": "leave_grant_year", "category": "other" },
+    { "action": "review_complete", "category": "other" },
+    { "action": "holiday_delete", "category": "deletion" }
+  ]
+}
