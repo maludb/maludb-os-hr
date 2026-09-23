@@ -1,6 +1,6 @@
 {
     "generated_from": "docs/business-os-action-manifest.md",
-    "generated_at": "2026-09-23T03:00:30+00:00",
+    "generated_at": "2026-09-23T03:06:29+00:00",
     "screens": {
         "dashboard": {
             "screen": "dashboard",
@@ -77,7 +77,7 @@
                 "department",
                 "business_role"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "person-directory-edit": {
@@ -86,7 +86,7 @@
             "section": "People",
             "when": "to change a person's directory facts: name, job title, phone, timezone, external, status, role",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "employment-edit": {
@@ -119,8 +119,8 @@
                 "q",
                 "archived"
             ],
-            "built": false,
-            "stub": true
+            "built": true,
+            "stub": false
         },
         "department-view": {
             "screen": "department-view",
@@ -128,7 +128,7 @@
             "section": "Departments",
             "when": "one department: its people and agents, admins, sub-departments, who is off",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "department-add": {
@@ -140,7 +140,7 @@
                 "name",
                 "parent"
             ],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "department-edit": {
@@ -149,7 +149,7 @@
             "section": "Departments",
             "when": "to rename a department, re-parent it, name its manager or describe it",
             "params": [],
-            "built": false,
+            "built": true,
             "stub": false
         },
         "pay-runs": {
@@ -496,7 +496,7 @@
             "approval": "external_send",
             "log_event": "person.invite",
             "who": "hr, admin",
-            "built": false
+            "built": true
         },
         "person_directory_update": {
             "action": "person_directory_update",
@@ -557,7 +557,7 @@
             "approval": "other",
             "log_event": "person.directory_update",
             "who": "hr, admin",
-            "built": false
+            "built": true
         },
         "membership_save": {
             "action": "membership_save",
@@ -594,7 +594,7 @@
             "approval": "other",
             "log_event": "membership.save",
             "who": "hr, admin",
-            "built": false
+            "built": true
         },
         "membership_remove": {
             "action": "membership_remove",
@@ -619,7 +619,7 @@
             "approval": "other",
             "log_event": "membership.remove",
             "who": "hr, admin",
-            "built": false
+            "built": true
         },
         "employment_save": {
             "action": "employment_save",
@@ -864,7 +864,7 @@
             "approval": "other",
             "log_event": "department.create",
             "who": "super, hr",
-            "built": false
+            "built": true
         },
         "department_update": {
             "action": "department_update",
@@ -907,7 +907,7 @@
             "approval": "other",
             "log_event": "department.update",
             "who": "hr, admin",
-            "built": false,
+            "built": true,
             "partial": true
         },
         "pay_run_create": {

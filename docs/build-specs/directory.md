@@ -53,5 +53,15 @@ log_activity($pdo, 'person.directory_update', 'member', $id, ['before' => …, '
 ## Out of scope
 Archiving a department (kernel only); granting HR or any application; anything about agents; `super_admin`.
 
+## Built and proven — 2026-09-23 (against the live kernel, as member 1)
+- `department_create` made department 18 in the kernel (parent Front Office, manager the owner); the mirror held it at once; the feed's next pass applied it once more without doubling. Re-parenting to itself → 422 from HR's own check; the description update reached the kernel and the mirror.
+- `membership_save` put Priya (26) in it as an admin in the kernel and the mirror; the department view listed her; `membership_remove` dated her `left_at` in both.
+- `person_directory_update` changed her job title in the kernel; the mirror followed from the kernel's answer; HR's row carries the kernel's request id and the kernel's own row for that id reads `member.update by 1 via hr` — the two trails join. The kernel's refusal for a super-admin's record is shown verbatim (403). Through the action-token door (JSON, partial) one field changed and the rest held.
+- `person_invite` → the kernel answered 202 and wrote the invitation (a fresh `example.invalid` address, department 18); HR shows the confirmation screen.
+- A `read` person: the directory form of someone she does not administer, the invite form (she administers no department) and the department form → 403.
+- 375 px and 1280 px: no horizontal scroll on the four screens.
+- Kernel change this slice needed: `X-Request-Id` on every JSON answer (`app/http.php`, `json_response()`), which the contract had promised.
+- Left behind: department 18 `SMOKE 0923-030459 Dept` (archiving is the kernel's; a super-admin archives it there) and the invitation to `smoke-0923-030459@example.invalid`.
+
 ## Open Questions
 - (none)
