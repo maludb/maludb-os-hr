@@ -188,4 +188,12 @@ screen that publishes the two MCP URLs, the health endpoint, `maludb-os.json` ve
 - 2026-09-23: **Phase 2 built and proven** (`build-specs/sso-shell.md`, "Proof"): sign-on receivers, the
   mirror and its timer, the ingest bridge, the shell with the command bar through the kernel's chat
   endpoint, the dashboard, `/activity`, `/api/v1/health`; Apache `hr.subello.com` + loopback :8180; HR is
-  application 39 in the kernel (catalog `hr`, kind `ours`). Next: Phase 3, slice 1 (people).
+  application 39 in the kernel (catalog `hr`, kind `ours`).
+- 2026-09-23: **Phase 3, all six slices built and proven** (each spec's "Built and proven" section): people, directory,
+  leave, compensation, pay runs, reviews; migrations db/010 (the frozen-run guard's cascade) and db/011 (an agent
+  admitted on the kernel's word) added.
+- 2026-09-23: **Phase 4 built and proven** (`build-specs/mcp-and-registration.md`): the two read MCP servers with
+  the run-facts gate, the tokens screen, the registry on the kernel's Actions MCP, endpoints, skills and the expert
+  registered; the command bar answered a real question through the kernel with HR's tools. **HR is complete as
+  specified.** Open: the leave desk hire (the owner's click), DNS and the proxy for `hr.subello.com`, the owner's
+  answers to §7.

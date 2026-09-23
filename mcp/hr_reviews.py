@@ -8,7 +8,7 @@ import json
 from pydantic import Field
 
 import db
-from business_common import RO, _Base
+from business_common import RO, _Base, _iso_date
 
 
 class FindReviewsIn(_Base):
@@ -50,8 +50,8 @@ def register(mcp, q) -> None:
             a.append(params.reviewer_member_id); w.append(f"reviewer_member_id = ${len(a)}")
         if params.status in ("scheduled", "in_progress", "completed", "cancelled"):
             a.append(params.status); w.append(f"status = ${len(a)}")
-        if params.due_before:
-            a.append(params.due_before); w.append(f"due_date < ${len(a)}::date")
+        if params.due_before and _iso_date(params.due_before):
+            a.append(_iso_date(params.due_before)); w.append(f"due_date < ${len(a)}")
         if params.overdue_only:
             w.append("status IN ('scheduled', 'in_progress') AND due_date < current_date")
         a.append(params.limit)

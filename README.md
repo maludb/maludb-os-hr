@@ -28,5 +28,12 @@ sudo -u postgres createdb subello_hr
 for f in db/*.sql; do sudo -u postgres psql -v ON_ERROR_STOP=1 -d subello_hr -f "$f"; done
 sudo -u postgres psql -c "ALTER ROLE hr_rw PASSWORD '…'"   # and hr_records_ro, hr_activity_ro
 cp config/.env.example config/.env   # fill in; chmod 640, group www-data
+python3 -m venv mcp/venv && mcp/venv/bin/pip install asyncpg httpx "mcp>=1.2,<2" uvicorn pydantic
+sudo cp deploy/apache-hr.conf /etc/apache2/sites-available/hr.conf && sudo a2ensite hr && sudo systemctl reload apache2
+sudo cp deploy/hr-*.service deploy/hr-*.timer /etc/systemd/system/ && sudo systemctl daemon-reload
+sudo systemctl enable --now hr-records-mcp hr-activity-mcp hr-directory-sync.timer hr-activity-ingest.timer
 ```
+Then in the kernel (what the installation agent will do — `docs/build-specs/mcp-and-registration.md`): the catalog
+entry and the application with its sign-on paths, the application token into `config/.env`, `bin/directory_sync.php
+--full`, the four endpoints, `mcp/registries/hr.json` (from `deploy/kernel-registry-hr.json`), the skills, the expert.
 See `docs/hr-design.md` §8 for the state of the build.

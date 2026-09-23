@@ -36,8 +36,13 @@ the slice specs in `docs/build-specs/` (Phase 2 first: `sso-shell.md`; the exemp
 - Repo and install path `/srv/apps/hr` (`/srv/apps/<catalog_key>` for every application from us). Apache: `deploy/apache-hr.conf` =
   `/etc/apache2/sites-available/hr.conf` (public `hr.subello.com`, loopback :8180); timers `hr-directory-sync` and `hr-activity-ingest`
   installed from `deploy/`. In the kernel HR is application 39, catalog `hr` (kind `ours`); its token is in `config/.env`.
-- **State (2026-09-23):** Phase 0–1 approved; Phase 2 (sso, mirror, shell) built and proven — see `docs/hr-design.md` §8 and
-  `docs/build-specs/sso-shell.md` "Proof". Next: Phase 3 slice 1, people (`docs/build-specs/people.md`), the exemplar.
+- **State (2026-09-23):** every phase built and proven — `docs/hr-design.md` §8; each slice spec ends with "Built and proven";
+  Phase 4 is `docs/build-specs/mcp-and-registration.md`. Migrations run to db/011. Services: `hr-records-mcp` (8821),
+  `hr-activity-mcp` (8822), timers `hr-directory-sync`, `hr-activity-ingest`. In the kernel: application 39, endpoints 15–18,
+  skills 6/7 assigned (11/12), the expert = agent 48 (Sonnet 5, Hermes) with its grants; `mcp/registries/hr.json` there.
+- Fixtures left in the data (all named or reasoned SMOKE, or Priya's): Priya (26) employed with pay, leave, reviews and
+  pay run PR-0001; department 18 `SMOKE …` in the kernel; a test invitation. The owner's items: DNS + proxy for
+  `hr.subello.com` (until then `/etc/hosts` maps it to this host), hire the leave desk (`maludb-os.json` agents[1]).
 - Proving sign-on by hand: mint with the kernel's functions (`sso_launch_url()` as member 1 in a CLI with `$_SESSION` set), present
   the token to `http://127.0.0.1/sso?…` with `Host: hr.subello.com`; the headless-browser check is `node` + `/var/www/web/node_modules/playwright`
   with `--host-resolver-rules=MAP hr.subello.com 127.0.0.1`.

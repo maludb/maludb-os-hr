@@ -6,7 +6,7 @@ from __future__ import annotations
 from pydantic import Field
 
 import db
-from business_common import RO, _Base, _period_bounds
+from business_common import RO, _Base, _iso_date, _period_bounds
 
 
 class LeaveBalanceIn(_Base):
@@ -89,11 +89,14 @@ def register(mcp, q) -> None:
         given, plus the holidays in the range. Call for "who is off next week", "is anyone in the
         Kitchen off on Friday". Only people the caller may see."""
         pool = await q.__globals__["_pool"]()
-        w, a = ["end_date >= $1::date", "start_date <= $2::date", "status IN ('approved', 'requested')" if params.include_requested else "status = 'approved'"], [params.date_from, params.date_to]
+        d_from, d_to = _iso_date(params.date_from), _iso_date(params.date_to)
+        if d_from is None or d_to is None:
+            return db.to_json({"error": "date_from and date_to are ISO dates (YYYY-MM-DD)."})
+        w, a = ["end_date >= $1", "start_date <= $2", "status IN ('approved', 'requested')" if params.include_requested else "status = 'approved'"], [d_from, d_to]
         if params.department_id:
             a.append(params.department_id); w.append(f"EXISTS (SELECT 1 FROM mcp_department_members dm WHERE dm.member_id = lr.member_id AND dm.department_id = ${len(a)} AND dm.left_at IS NULL)")
         reqs = await db.fetch_scoped(pool, f"SELECT leave_request_id, member_id, display_name, primary_department, leave_type, start_date, end_date, days, half_day, status FROM mcp_leave_requests lr WHERE {' AND '.join(w)} ORDER BY display_name, start_date", *a)
-        hol = await db.fetch_scoped(pool, "SELECT holiday_date, name FROM mcp_holidays WHERE holiday_date BETWEEN $1::date AND $2::date ORDER BY holiday_date", params.date_from, params.date_to)
+        hol = await db.fetch_scoped(pool, "SELECT holiday_date, name FROM mcp_holidays WHERE holiday_date BETWEEN $1 AND $2 ORDER BY holiday_date", d_from, d_to)
         return db.to_json({"from": params.date_from, "to": params.date_to, "off": reqs, "holidays": hol})
 
     @mcp.tool(name="find_leave_types", annotations={"title": "Leave types and holidays", **RO})

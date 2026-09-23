@@ -31,7 +31,7 @@ $answer = kernel_call('POST', '/api/v1/agents/chat.php?agent=expert', [
     'utterance' => $utterance, 'screen' => $screen,
     'context' => ['record_id' => $recordId, 'application' => app_key()],
     'conversation_id' => $conversation, 'wait' => 60,
-], ['X-Acting-Member: ' . current_member_id()]);
+], ['X-Acting-Member: ' . current_member_id()], 75);            // the kernel holds the request up to `wait`
 
 $refusals = [
     400 => 'The kernel did not know who was asking.',
@@ -55,7 +55,7 @@ if ($answer['status'] >= 400) {
 $deadline = time() + 55;
 while ($answer['status'] === 202 && empty($body['finished']) && time() < $deadline && !empty($body['run_id'])) {
     usleep(1500000);
-    $answer = kernel_call('GET', '/api/v1/agents/chat.php?run=' . (int) $body['run_id']);
+    $answer = kernel_call('GET', '/api/v1/agents/chat.php?run=' . (int) $body['run_id'], null, [], 20);
     $body = $answer['body'] ?? [];
     if ($answer === null || $answer['status'] >= 400) {
         break;

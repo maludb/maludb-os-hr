@@ -346,7 +346,7 @@ function run_facts(string $token): ?array
  * One call to the kernel's internal API with the application token. Returns
  * ['status' => int, 'body' => array|null, 'request_id' => ?string], or null when unreachable.
  */
-function kernel_call(string $method, string $path, ?array $body = null, array $headers = []): ?array
+function kernel_call(string $method, string $path, ?array $body = null, array $headers = [], int $timeout = 15): ?array
 {
     $base = rtrim((string) env('OS_INTERNAL_URL', 'http://127.0.0.1:8080'), '/');
     $token = (string) env('OS_APPLICATION_TOKEN', '');
@@ -361,7 +361,7 @@ function kernel_call(string $method, string $path, ?array $body = null, array $h
         'X-Request-Id: ' . request_id(),
     ], $headers);
     $opts = [CURLOPT_RETURNTRANSFER => true, CURLOPT_HEADER => true, CURLOPT_CONNECTTIMEOUT => 3,
-             CURLOPT_TIMEOUT => 15, CURLOPT_CUSTOMREQUEST => $method];
+             CURLOPT_TIMEOUT => $timeout, CURLOPT_CUSTOMREQUEST => $method];
     if ($body !== null) {
         $hdrs[] = 'Content-Type: application/json';
         $opts[CURLOPT_POSTFIELDS] = json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
