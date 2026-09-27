@@ -16,6 +16,12 @@ offers exactly the tools granted — fail closed, and no tool acts when `is_eval
 
 ## Records server — `hr_records_mcp` (role `hr_records_ro`, `MCP_RECORDS_PORT`)
 
+### Roles (kernel db/145, maludb-os-integration 0.4.0)
+`app_roles` — no arguments — answers `os.app-roles/1`: HR's roles (key, name, description, capability,
+is_admin, rights[]) and its rights (key, description), from `mcp_app_roles` and `hr_rights` (db/012). The
+kernel reads it with its own 60-second token, which reaches this tool only; any person or agent may call
+it too. See `docs/build-specs/roles-and-rights.md`.
+
 ### Directory and employment
 | Tool | Call it when | Answers | Reads | Key params | Gate |
 |---|---|---|---|---|---|

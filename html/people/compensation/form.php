@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 3) . '/app/features/people/queries.php';
 require_once dirname(__DIR__, 3) . '/app/features/people/present.php';
 require_once dirname(__DIR__, 3) . '/app/features/compensation/queries.php';
-require_hr();
+require_pay();
 $pdo = db();
 $id = request_integer('person') ?? request_integer('id');
 $person = $id === null ? null : find_person($pdo, $id);

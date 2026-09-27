@@ -24,6 +24,8 @@ ENV_PATH = Path(__file__).resolve().parent.parent / "config" / ".env"
 # Per-request auth context, set by the bearer-auth middleware, read by tools.
 request_member_id: contextvars.ContextVar[int | None] = contextvars.ContextVar("member_id", default=None)
 request_role: contextvars.ContextVar[str] = contextvars.ContextVar("role", default="anon")
+# True while the kernel itself is calling (a kernel token): only app_roles is listed or callable.
+request_is_kernel: contextvars.ContextVar[bool] = contextvars.ContextVar("is_kernel", default=False)
 # The agent run a request belongs to, when its bearer is an agent RUN token (else None).
 request_run_id: contextvars.ContextVar[int | None] = contextvars.ContextVar("run_id", default=None)
 # The raw bearer the caller presented (a run token is shown to the kernel's run-facts call).
@@ -132,6 +134,21 @@ def verify_run_token(token: str) -> tuple[int, int] | None:
     if not hmac.compare_digest(expected, sig) or time.time() > int(exp):
         return None
     return int(mid), int(run)
+
+
+def verify_kernel_token(token: str) -> bool:
+    """The kernel itself calling (kernel db/145): 'kernel.{exp}.{app_key}.{nonce}.{hmac}' signed over
+    "kernel:exp.app_key.nonce" with ACTION_TOKEN_KEY, 60 s, bound to this application. It admits to
+    app_roles and nothing else (server_common)."""
+    parts = token.split(".")
+    if len(parts) != 5 or parts[0] != "kernel":
+        return False
+    _, exp, app, nonce, sig = parts
+    key = _action_key()
+    if key is None or not exp.isdigit() or app != ENV.get("APP_KEY", "hr") or len(nonce) != 32:
+        return False
+    expected = hmac.new(key, f"kernel:{exp}.{app}.{nonce}".encode(), hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected, sig) and time.time() <= int(exp)
 
 
 def relay_signature(token: str) -> str | None:

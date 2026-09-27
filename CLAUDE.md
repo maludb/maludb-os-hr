@@ -37,7 +37,7 @@ the slice specs in `docs/build-specs/` (Phase 2 first: `sso-shell.md`; the exemp
   `/etc/apache2/sites-available/hr.conf` (public `hr.subello.com`, loopback :8180); timers `hr-directory-sync` and `hr-activity-ingest`
   installed from `deploy/`. In the kernel HR is application 39, catalog `hr` (kind `ours`); its token is in `config/.env`.
 - **State (2026-09-23):** every phase built and proven — `docs/hr-design.md` §8; each slice spec ends with "Built and proven";
-  Phase 4 is `docs/build-specs/mcp-and-registration.md`. Migrations run to db/011. Services: `hr-records-mcp` (8821),
+  Phase 4 is `docs/build-specs/mcp-and-registration.md`. Migrations run to db/012 (HR's roles and rights, 2026-09-27: `docs/build-specs/roles-and-rights.md` — HR publishes Employee, Manager, Payroll, HR Admin through `app_roles`; the kernel grants any set; the rules ask `hr_has_right()`). Services: `hr-records-mcp` (8821),
   `hr-activity-mcp` (8822), timers `hr-directory-sync`, `hr-activity-ingest`. In the kernel: application 39, endpoints 15–18,
   skills 6/7 assigned (11/12), the expert = agent 48 (Sonnet 5, Hermes) with its grants; `mcp/registries/hr.json` there.
 - Fixtures left in the data (all named or reasoned SMOKE, or Priya's): Priya (26) employed with pay, leave, reviews and

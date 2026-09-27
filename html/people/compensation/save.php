@@ -7,7 +7,7 @@ require_once dirname(__DIR__, 3) . '/app/features/people/present.php';
 require_once dirname(__DIR__, 3) . '/app/features/compensation/queries.php';
 require_post();
 verify_csrf();
-require_hr();
+require_pay();
 $pdo = db();
 $id = request_integer('person') ?? request_integer('member_id');
 $person = $id === null ? null : find_person($pdo, $id);

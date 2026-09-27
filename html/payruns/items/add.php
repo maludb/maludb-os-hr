@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 3) . '/app/features/payruns/queries.php';
 require_once dirname(__DIR__, 3) . '/app/features/compensation/queries.php';
 require_post();
 verify_csrf();
-require_hr();
+require_pay();
 $pdo = db();
 $runId = request_integer('pay_run') ?? request_integer('id');
 $memberId = request_integer('person') ?? request_integer('member_id');

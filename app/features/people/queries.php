@@ -66,7 +66,7 @@ function find_people(PDO $pdo, array $filters, string $sort = 'name', int $page 
     $total = (int) $count->fetchColumn();
     $st = $pdo->prepare(<<<SQL
         SELECT m.member_id, m.display_name, m.email, m.member_kind, m.business_role, m.is_external, m.status AS member_status,
-               m.job_title, m.primary_department, m.primary_department_id, m.hr_capability,
+               m.job_title, m.primary_department, m.primary_department_id, m.hr_capability, array_to_string(m.hr_roles, ', ') AS hr_roles,
                e.employee_no, e.employment_type, e.status AS employment_status, e.start_date, e.end_date, e.manager_name
         {$from}
         ORDER BY {$order}
@@ -84,7 +84,7 @@ function find_people(PDO $pdo, array $filters, string $sort = 'name', int $page 
 /** One person: the mirror row, departments, employment (as the view shows it), manager, reports. */
 function find_person(PDO $pdo, int $memberId): ?array
 {
-    $st = $pdo->prepare('SELECT * FROM mcp_members WHERE member_id = :id');
+    $st = $pdo->prepare("SELECT *, array_to_string(hr_roles, ', ') AS hr_roles FROM mcp_members WHERE member_id = :id");
     $st->execute(['id' => $memberId]);
     $person = $st->fetch();
     if ($person === false) {

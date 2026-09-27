@@ -22,6 +22,8 @@ if (is_htmx_request() && ($_SERVER['HTTP_HX_TARGET'] ?? '') === 'reviews-list-re
     exit;
 }
 log_screen_view($pdo, 'reviews-list');
-$canSchedule = hr_is_staff() || (bool) $pdo->query('SELECT count(*) FROM mcp_employment_profiles WHERE manager_member_id = ' . $me)->fetchColumn();
+// A Manager (team.manage, db/012) schedules for the people in the departments they administer, too.
+$canSchedule = hr_is_staff() || (bool) $pdo->query('SELECT count(*) FROM mcp_employment_profiles WHERE manager_member_id = ' . $me)->fetchColumn()
+    || (has_right('team.manage') && is_dept_admin());
 render_screen('Reviews', view('reviews/page.php', ['resultsHtml' => $resultsHtml, 'filters' => $filters, 'canSchedule' => $canSchedule]),
     ['activeNav' => 'reviews-list', 'screen' => 'reviews-list', 'entity' => 'review']);

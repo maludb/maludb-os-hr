@@ -43,4 +43,4 @@ $changed = array_sum($counts);
 if ($changed > 0 || !empty($doc['full'])) {
     log_activity($pdo, 'directory.sync', null, null, ['actor_member_id' => null, 'after' => $counts + ['full' => !empty($doc['full'])]]);
 }
-printf("applied %d members, %d departments, %d memberships%s; cursor %s\n", $counts['members'], $counts['departments'], $counts['memberships'], !empty($doc['full']) ? ' (full)' : '', $doc['next']);
+printf("applied %d members, %d departments, %d memberships, %d holdings%s; cursor %s\n", $counts['members'], $counts['departments'], $counts['memberships'], $counts['access'] ?? 0, !empty($doc['full']) ? ' (full)' : '', $doc['next']);

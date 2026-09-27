@@ -33,7 +33,7 @@ $groups = [
         ['leave-balances', '/leave/balances/', 'feather-pie-chart', 'Balances', true],
     ],
     'Pay' => [
-        ['pay-runs', '/payruns/', 'feather-dollar-sign', 'Pay runs', $staff],
+        ['pay-runs', '/payruns/', 'feather-dollar-sign', 'Pay runs', can_run_pay()],
         ['payslip', '/payruns/mine', 'feather-file-text', 'My payslips', true],
     ],
     'Reviews' => [

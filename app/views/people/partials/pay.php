@@ -1,4 +1,4 @@
-<?php /** The Pay tab. Data: person, staff, pay (current, changes) */ $id = (int) $person['member_id']; $cur = $pay['current']; ?>
+<?php /** The Pay tab. Data: person, staff, pay (current, changes). Changes are Payroll's or HR staff's (can_run_pay(), db/012). */ $staff = can_run_pay(); $id = (int) $person['member_id']; $cur = $pay['current']; ?>
 <div id="person-pay" hx-get="/people/<?= $id ?>?tab=pay" hx-trigger="compensationChangeChanged from:body" hx-target="#page-content" hx-swap="innerHTML">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="fw-bold text-muted text-uppercase fs-12 mb-0">Current pay</h6>

@@ -113,6 +113,20 @@ function hr_is_staff(): bool
     return $v ??= db_bool(db(), 'SELECT hr_is_staff()');
 }
 
+/** A right one of the member's roles gives inside HR (db/012; roles from the kernel's claims and feed). */
+function has_right(string $right): bool
+{
+    static $cache = [];
+    return $cache[$right] ??= db_bool(db(), 'SELECT hr_has_right(:r)', ['r' => $right]);
+}
+
+/** Pay runs and pay changes: Payroll or HR staff (hr_can_run_pay(), db/012). */
+function can_run_pay(): bool
+{
+    static $v = null;
+    return $v ??= db_bool(db(), 'SELECT hr_can_run_pay()');
+}
+
 function is_super_admin(): bool
 {
     static $v = null;
@@ -162,7 +176,15 @@ function require_hr(): void
 {
     require_login();
     if (!hr_is_staff()) {
-        refuse(403, 'This needs HR staff (the HR application at admin capability) or the super-admin.');
+        refuse(403, 'This needs the HR Admin role in HR, or the super-admin.');
+    }
+}
+
+function require_pay(): void
+{
+    require_login();
+    if (!can_run_pay()) {
+        refuse(403, 'This needs the Payroll or HR Admin role in HR, or the super-admin.');
     }
 }
 

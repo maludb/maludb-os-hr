@@ -5,7 +5,7 @@ require_once dirname(__DIR__, 3) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 3) . '/app/features/compensation/queries.php';
 require_post();
 verify_csrf();
-require_hr();
+require_pay();
 $pdo = db();
 $id = request_integer('compensation_change') ?? request_integer('id');
 $c = $id === null ? null : find_compensation_change($pdo, $id);

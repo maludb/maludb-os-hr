@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 2) . '/app/features/payruns/queries.php';
 require_once dirname(__DIR__, 2) . '/app/features/compensation/queries.php';
-require_hr();
+require_pay();
 $pdo = db();
 $settings = $pdo->query('SELECT * FROM mcp_hr_settings')->fetch();
 $start = request_date('period_start') ?: date('Y-m-01');

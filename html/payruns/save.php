@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 2) . '/app/features/payruns/queries.php';
 require_once dirname(__DIR__, 2) . '/app/features/compensation/queries.php';
 require_post();
 verify_csrf();
-require_hr();
+require_pay();
 $pdo = db();
 $f = ['period_start' => request_date('period_start'), 'period_end' => request_date('period_end'), 'pay_date' => request_date('pay_date'),
       'currency' => strtoupper(request_string('currency')) ?: (string) $pdo->query('SELECT currency FROM mcp_hr_settings')->fetchColumn(), 'note' => request_string('note') ?: null];

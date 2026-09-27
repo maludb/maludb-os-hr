@@ -25,7 +25,7 @@ if ($id !== null) {
     render_screen('Write · ' . $r['display_name'], view('reviews/partials/write-form.php', ['r' => $r, 'values' => $r, 'errors' => []]),
         ['activeNav' => 'reviews-list', 'screen' => 'review-edit', 'entity' => 'review', 'recordId' => (string) $id]);
 }
-$people = array_values(array_filter(review_people_options($pdo), static fn (array $p): bool => hr_is_staff() || (int) ($p['manager_member_id'] ?? 0) === $me));
+$people = array_values(array_filter(review_people_options($pdo), static fn (array $p): bool => hr_is_staff() || is_manager_of((int) $p['member_id'])));
 if ($people === []) {
     refuse(403, 'You schedule reviews for your reports; HR staff for everyone.');
 }

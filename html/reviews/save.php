@@ -81,7 +81,7 @@ $renderForm = function (array $errs) use ($pdo, $me, $memberId, $kind, $due, $re
     http_response_code(422);
     header('HX-Retarget: #page-content');
     header('HX-Reswap: innerHTML');
-    $people = array_values(array_filter(review_people_options($pdo), static fn (array $p): bool => hr_is_staff() || (int) ($p['manager_member_id'] ?? 0) === $me));
+    $people = array_values(array_filter(review_people_options($pdo), static fn (array $p): bool => hr_is_staff() || is_manager_of((int) $p['member_id'])));
     echo view('reviews/partials/form.php', ['values' => ['member_id' => $memberId, 'kind' => $kind, 'due_date' => is_string($due) ? $due : '', 'reviewer_member_id' => $reviewerId,
         'period_start' => is_string($ps) ? $ps : '', 'period_end' => is_string($pe) ? $pe : ''], 'errors' => $errs, 'people' => $people, 'reviewers' => manager_options($pdo, null), 'me' => $me]);
     exit;

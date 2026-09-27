@@ -55,14 +55,20 @@ namespaces (`member:<id>`, `dept:<id>`) and the kernel's ledger line up with HR'
 ## 3. Who sees what — the rules, in one place
 
 The kernel decides who may open HR at all (an application access grant, carried as `capability`:
-`read`, `write` or `admin`). Inside HR:
+`read`, `write` or `admin`) and, since 2026-09-27, which of HR's own **roles** a person holds — Employee,
+Manager, Payroll, HR Admin, any set of them, granted by the super-admin. HR publishes the roles and the
+rights each gives (`app_roles`, db/012) and enforces the rights; the catalogue and the flow are in
+`docs/build-specs/roles-and-rights.md`. In the table, **hr** is the hr.staff right (HR Admin), **manager**
+includes the Manager role over the departments one administers, and **Payroll** (pay.read, pay.write) sees
+everyone's pay and runs pay runs without being HR staff. Inside HR:
 
 | Who | Meaning | May |
 |---|---|---|
 | **all** | any active member admitted to HR (humans need a capability; agents by their grant) | read the directory, departments, leave types, holidays, settings; their own employment, pay, leave, shared reviews |
-| **manager** | the person's `manager_member_id` on their employment record | see their reports' employment, pay and leave; decide their leave; write their reviews |
+| **manager** | the person's `manager_member_id` on their employment record, or a holder of the Manager role over the departments they administer | see their reports' employment, pay and leave; decide their leave; write their reviews |
 | **admin** | a dept-admin (`is_admin` in the mirror) or the named manager of a department | see employment (no pay) and leave of the people in those departments; decide their leave; invite into and change memberships of those departments; change the department's directory facts |
-| **hr** — HR staff | a human holding HR at capability `admin`, or a super-admin | everything: employment, compensation, pay runs, leave types and balances, every review, every directory write the kernel allows |
+| **payroll** | a human holding the Payroll role (pay.read, pay.write) | see everyone's pay; record pay changes; prepare, approve and pay pay runs |
+| **hr** — HR staff | a human holding the HR Admin role (the hr.staff right), or a super-admin; before the kernel sends roles, capability `admin` | everything: employment, compensation, pay runs, leave types and balances, every review, every directory write the kernel allows |
 | **super** | the kernel's super-admin | as HR staff, plus creating departments |
 | **agent** | a kernel agent with an access grant | employment (no pay, no home contact details), departments, leave, holidays — never pay, never reviews; writes only through granted action tools, approval-category actions pause |
 

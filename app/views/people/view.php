@@ -44,7 +44,7 @@ $color = employment_status_color($e['status'] ?? null);
                         <div class="mb-1"><i class="feather-mail me-2 text-muted"></i><?= e($person['email'] ?? '—') ?></div>
                         <div class="mb-1"><i class="feather-phone me-2 text-muted"></i><?= e($person['phone'] ?? '—') ?></div>
                         <div class="mb-1"><i class="feather-clock me-2 text-muted"></i><?= e($person['timezone']) ?></div>
-                        <div class="mb-1"><i class="feather-shield me-2 text-muted"></i><?= e(match ($person['business_role']) { 'super_admin' => 'Super-admin', 'dept_admin' => 'Department admin', default => 'User' }) ?><?= $person['hr_capability'] ? ' · HR ' . e($person['hr_capability']) : '' ?></div>
+                        <div class="mb-1"><i class="feather-shield me-2 text-muted"></i><?= e(match ($person['business_role']) { 'super_admin' => 'Super-admin', 'dept_admin' => 'Department admin', default => 'User' }) ?><?= ($person['hr_roles'] ?? '') !== '' ? ' · HR: ' . e($person['hr_roles']) : ($person['hr_capability'] ? ' · HR ' . e($person['hr_capability']) : '') ?></div>
                     </div>
                 </div>
             </div>

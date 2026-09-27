@@ -22,6 +22,9 @@ import db
 
 log = logging.getLogger("hr_mcp")
 
+# What the kernel's own token may reach (kernel db/145): the roles catalogue, nothing with rows in it.
+KERNEL_TOOLS = {"app_roles"}
+
 # run id -> (facts, fetched_at). A run's grants do not change while it runs; a short TTL bounds a mistake.
 _facts_cache: dict[int, tuple[dict, float]] = {}
 _FACTS_TTL = 300
@@ -75,10 +78,16 @@ def install_grants(mcp: FastMCP, endpoint_name: str) -> None:
 
     async def list_tools():
         tools = await mcp.list_tools()
+        if db.request_is_kernel.get():
+            return [t for t in tools if t.name in KERNEL_TOOLS]
         g = await granted()
         return tools if g is None else [t for t in tools if t.name in g]
 
     async def call_tool(name: str, arguments: dict[str, Any]):
+        if db.request_is_kernel.get():
+            if name not in KERNEL_TOOLS:
+                raise ToolError(f"The kernel's token reaches {', '.join(sorted(KERNEL_TOOLS))} only.")
+            return await mcp.call_tool(name, arguments)
         g = await granted()
         if g is not None and name not in g:
             raise ToolError(f"'{name}' is not among the tools this agent was granted on {endpoint_name}.")
@@ -101,6 +110,15 @@ def make_app(mcp: FastMCP, db_user_key: str, db_pw_key: str, endpoint_name: str)
         auth = headers.get("authorization", "")
         token = auth[7:].strip() if auth[:7].lower() == "bearer " else ""
         pool = await db.get_pool(user, password)
+        if token and db.verify_kernel_token(token):
+            # The kernel itself (kernel db/145): no member, no rows — app_roles only.
+            db.request_is_kernel.set(True)
+            db.request_member_id.set(None)
+            db.request_role.set("anon")
+            db.request_token.set(token)
+            db.request_run_id.set(None)
+            return await inner(scope, receive, send)
+        db.request_is_kernel.set(False)
         ctx = await db.resolve_token(pool, token) if token else None
         if ctx is None and token and db.verify_run_token(token) is not None:
             # An agent's first contact: the mirror has the agent but no admission yet. The kernel's

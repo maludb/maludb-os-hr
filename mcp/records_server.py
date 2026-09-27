@@ -41,6 +41,23 @@ async def records_search(params: SearchIn) -> str:
     return await db.run_search(await _pool(), params.sql)
 
 
+@mcp.tool(name="app_roles", annotations={"title": "HR's roles and rights", **RO})
+async def app_roles() -> str:
+    """The roles HR offers and the rights each gives inside HR — what the Business OS kernel reads to
+    let a super-admin grant them (schema os.app-roles/1, maludb-os-integration 0.4.0). The catalogue
+    is not about anyone, so the kernel's own token may read it; so may any person or agent."""
+    pool = await _pool()
+    async with pool.acquire() as con:
+        rights = await con.fetch("SELECT right_key, description FROM hr_rights ORDER BY sort_order, right_key")
+        roles = await con.fetch("SELECT role_key, name, description, capability, is_admin, rights FROM mcp_app_roles ORDER BY sort_order")
+    return db.json.dumps({
+        "schema": "os.app-roles/1",
+        "rights": [{"key": r["right_key"], "description": r["description"]} for r in rights],
+        "roles": [{"key": r["role_key"], "name": r["name"], "description": r["description"],
+                   "capability": r["capability"], "is_admin": r["is_admin"], "rights": list(r["rights"])} for r in roles],
+    })
+
+
 import hr_people
 import hr_pay
 import hr_leave

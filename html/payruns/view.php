@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__, 2) . '/app/bootstrap.php';
 require_once dirname(__DIR__, 2) . '/app/features/payruns/queries.php';
 require_once dirname(__DIR__, 2) . '/app/features/compensation/queries.php';
-require_hr();
+require_pay();
 $pdo = db();
 $id = request_integer('id');
 $run = $id === null ? null : find_pay_run($pdo, $id);

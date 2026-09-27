@@ -63,6 +63,11 @@ try {
     ] + (isset($claims['job_title']) ? ['job_title' => $claims['job_title']] : [])
       + (isset($claims['phone']) ? ['phone' => $claims['phone']] : [])
       + (isset($claims['timezone']) ? ['timezone' => $claims['timezone']] : []), $capability, true);
+    // The roles the kernel says they hold here (kernel db/145). A kernel from before roles sends none:
+    // the capability alone then decides, as it did (hr_has_right()).
+    if (array_key_exists('roles', $claims)) {
+        mirror_apply_roles($pdo, $memberId, is_array($claims['roles']) ? $claims['roles'] : []);
+    }
     $pdo->commit();
 } catch (Throwable $e) {
     $pdo->rollBack();
@@ -79,7 +84,7 @@ session_regenerate_id(true);
 $_SESSION = ['member_id' => $memberId, 'csrf_token' => bin2hex(random_bytes(32)), 'signed_on_at' => time()];
 session_open($pdo, $memberId, session_id());
 db_apply_context($pdo);
-log_activity($pdo, 'member.sign_on', 'member', $memberId, ['request_id' => $requestId, 'after' => ['capability' => $capability]]);
+log_activity($pdo, 'member.sign_on', 'member', $memberId, ['request_id' => $requestId, 'after' => ['capability' => $capability, 'roles' => $claims['roles'] ?? null]]);
 
 header('Cache-Control: no-store');
 header('Location: /', true, 302);
