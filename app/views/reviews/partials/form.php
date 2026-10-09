@@ -20,14 +20,14 @@
         <?= view('shared/validation-errors.php', ['errors' => $errors]) ?>
         <form method="post" action="/reviews/save.php" id="review-form" hx-post="/reviews/save.php" hx-target="#page-content" hx-swap="innerHTML">
             <?= csrf_field() ?>
-            <?php $field = static fn (string $name, string $label, string $input): string => '<div class="row mb-3" id="review-form-field-' . $name . '-row"><label for="review-form-field-' . $name . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
-            <?php $po = '<option value="">Choose…</option>'; foreach ($people as $p) { $po .= '<option value="' . (int) $p['member_id'] . '"' . ((int) ($v['member_id'] ?? 0) === (int) $p['member_id'] ? ' selected' : '') . '>' . e($p['display_name']) . '</option>'; } ?>
-            <?= $field('person', 'Person', '<select name="person" id="review-form-field-person" class="form-select" required>' . $po . '</select>') ?>
+            <?php $field = static fn (string $name, string $label, string $input, string $for = ''): string => '<div class="row mb-3" id="review-form-field-' . $name . '-row"><label for="review-form-field-' . $name . $for . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
+            <?= $field('person', 'Person', picker_field(['id' => 'review-form-field-person', 'name' => 'person', 'source' => 'reviewee', 'value' => $v['member_id'] ?? '', 'required' => true,
+                'placeholder' => 'Choose a person', 'search' => 'Search people…', 'labelledby' => 'review-form-field-person-label']), '-open') ?>
             <?php $ko = ''; foreach (REVIEW_KINDS as $k) { $ko .= '<option value="' . $k . '"' . (($v['kind'] ?? 'annual') === $k ? ' selected' : '') . '>' . e(ucfirst($k)) . '</option>'; } ?>
             <?= $field('kind', 'Kind', '<select name="kind" id="review-form-field-kind" class="form-select">' . $ko . '</select>') ?>
             <?= $field('due_date', 'Due', '<input type="date" name="due_date" id="review-form-field-due_date" class="form-control" required value="' . e($v['due_date']) . '">') ?>
-            <?php $ro = '<option value="">The person\'s manager</option>'; foreach ($reviewers as $m) { $ro .= '<option value="' . (int) $m['member_id'] . '"' . ((int) ($v['reviewer_member_id'] ?? 0) === (int) $m['member_id'] ? ' selected' : '') . '>' . e($m['display_name']) . '</option>'; } ?>
-            <?= $field('reviewer', 'Reviewer', '<select name="reviewer" id="review-form-field-reviewer" class="form-select">' . $ro . '</select>') ?>
+            <?= $field('reviewer', 'Reviewer', picker_field(['id' => 'review-form-field-reviewer', 'name' => 'reviewer', 'source' => 'manager', 'value' => $v['reviewer_member_id'] ?? '',
+                'title' => 'Reviewers', 'placeholder' => 'The person\'s manager', 'search' => 'Search people…', 'labelledby' => 'review-form-field-reviewer-label']), '-open') ?>
             <?= $field('period_start', 'Period', '<div class="d-flex gap-2"><input type="date" name="period_start" id="review-form-field-period_start" class="form-control" value="' . e($v['period_start']) . '"><input type="date" name="period_end" id="review-form-field-period_end" class="form-control" value="' . e($v['period_end']) . '"></div>') ?>
         </form>
     </div></div></div></div>

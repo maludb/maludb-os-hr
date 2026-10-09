@@ -27,7 +27,7 @@ the slice specs in `docs/build-specs/` (Phase 2 first: `sso-shell.md`; the exemp
 - Directory writes: `directory_call()` to the kernel with `X-Acting-Member`, then the mirror from the
   kernel's answer, then the local log with `kernel_request_id`. Never write the mirror from a form.
 - Lists of named things are cards; ledgers (leave requests, pay runs, balances, lines) are tables.
-  No modals; every screen works at 375 px; ids per the kebab-case scheme; `hx-push-url` always explicit.
+  No modals — two exemptions: `hx-confirm`, and the **record picker** (2026-10-09, `docs/build-specs/record-picker.md`: the one `#record-picker` search dialog that CHOOSES a person; it shows no record and holds no form); every screen works at 375 px; ids per the kebab-case scheme; `hx-push-url` always explicit.
 - Commit after every finished step on `main`, in the kernel repo's message style; never push.
 - Smokes and fixtures are named `SMOKE <run>`; test tokens are signed with the tenant's key from the
   kernel's `config/.env` and never written down.

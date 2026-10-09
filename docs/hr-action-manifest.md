@@ -13,6 +13,7 @@
 ### Screens
 - **Ids** are kebab-case `{entity}-list`, `{entity}-add`, `{entity}-view`, `{entity}-edit`, plus named screens.
 - **Canonical URLs** need the rewrites in `deploy/apache-hr.conf`: `/{x}/new` → `form.php`, `/{x}/{id}/edit` → `form.php?id=`, `/{x}/{id}` → `view.php?id=`.
+- **`/pick/`** (2026-10-09) is not a screen and not an action: `GET /pick/?source=&q=&page=&<declared params>` answers the rows of the record picker's modal (a fragment; nothing is logged). It is listed once here, never per source; the sources are in `app/pickers.php`. See `docs/build-specs/record-picker.md`.
 - **Prefill params** become query-string values the GET controller reads.
 - **Every screen partial stamps** `data-screen`, `data-entity`, `data-record-id` on `#page-content`, so "that", "this request" and "add a change here" resolve against the page the user is on.
 

@@ -66,7 +66,8 @@
             <?php if ($draft && $addable !== []): ?>
             <div class="card-footer">
                 <form method="post" action="/payruns/items/add.php" class="d-flex align-items-center gap-2" id="pay-run-add-form" hx-post="/payruns/items/add.php" hx-target="#page-content" hx-swap="innerHTML"><?= csrf_field() ?><input type="hidden" name="pay_run" value="<?= $id ?>">
-                    <select name="person" id="pay-run-add-field-person" class="form-select form-select-sm" required><option value="">Add a person…</option><?php foreach ($addable as $p): ?><option value="<?= (int) $p['member_id'] ?>"><?= e($p['display_name']) ?><?= $p['base_note'] ? ' — ' . e($p['base_note']) : '' ?></option><?php endforeach; ?></select>
+                    <div class="flex-grow-1 min-w-0"><?= picker_field(['id' => 'pay-run-add-field-person', 'name' => 'person', 'source' => 'payrun_person', 'value' => '', 'required' => true,
+                        'title' => 'Add a person', 'placeholder' => 'Add a person…', 'search' => 'Search people…', 'params' => ['run_id' => $id]]) ?></div>
                     <button type="submit" class="btn btn-sm btn-light-brand" id="pay-run-add-btn"><i class="feather-user-plus"></i></button>
                 </form>
             </div>

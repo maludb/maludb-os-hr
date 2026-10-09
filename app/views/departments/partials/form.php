@@ -22,13 +22,13 @@
         <form method="post" action="/departments/save.php" id="department-form" hx-post="/departments/save.php" hx-target="#page-content" hx-swap="innerHTML">
             <?= csrf_field() ?>
             <?php if (!$isNew): ?><input type="hidden" name="department" value="<?= $id ?>"><?php endif; ?>
-            <?php $field = static fn (string $name, string $label, string $input): string => '<div class="row mb-3" id="department-form-field-' . $name . '-row"><label for="department-form-field-' . $name . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
+            <?php $field = static fn (string $name, string $label, string $input, string $for = ''): string => '<div class="row mb-3" id="department-form-field-' . $name . '-row"><label for="department-form-field-' . $name . $for . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
             <?= $field('name', 'Name', '<input type="text" name="name" id="department-form-field-name" class="form-control" required maxlength="80" value="' . e($v['name'] ?? '') . '">') ?>
             <?= $field('description', 'Description', '<textarea name="description" id="department-form-field-description" class="form-control" rows="3">' . e($v['description'] ?? '') . '</textarea>') ?>
             <?php $po = '<option value="">— (the Front Office)</option>'; foreach ($parents as $p) { $po .= '<option value="' . (int) $p['department_id'] . '"' . ((int) ($v['parent_id'] ?? 0) === (int) $p['department_id'] ? ' selected' : '') . '>' . e($p['name']) . '</option>'; } ?>
             <?= $field('parent', 'Reports to', '<select name="parent" id="department-form-field-parent" class="form-select">' . $po . '</select>') ?>
-            <?php $mo = '<option value="">—</option>'; foreach ($managers as $m) { $mo .= '<option value="' . (int) $m['member_id'] . '"' . ((int) ($v['manager_member_id'] ?? 0) === (int) $m['member_id'] ? ' selected' : '') . '>' . e($m['display_name']) . ($m['job_title'] ? ' · ' . e($m['job_title']) : '') . '</option>'; } ?>
-            <?= $field('manager', 'Manager', '<select name="manager" id="department-form-field-manager" class="form-select">' . $mo . '</select>') ?>
+            <?= $field('manager', 'Manager', picker_field(['id' => 'department-form-field-manager', 'name' => 'manager', 'source' => 'manager', 'value' => $v['manager_member_id'] ?? '',
+                'title' => 'Managers', 'placeholder' => 'No manager', 'search' => 'Search people…', 'labelledby' => 'department-form-field-manager-label']), '-open') ?>
         </form>
     </div></div></div></div>
 </div>

@@ -20,10 +20,10 @@
         <?= view('shared/validation-errors.php', ['errors' => $errors]) ?>
         <form method="post" action="/leave/save.php" id="leave-form" hx-post="/leave/save.php" hx-target="#page-content" hx-swap="innerHTML">
             <?= csrf_field() ?>
-            <?php $field = static fn (string $name, string $label, string $input): string => '<div class="row mb-3" id="leave-form-field-' . $name . '-row"><label for="leave-form-field-' . $name . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
+            <?php $field = static fn (string $name, string $label, string $input, string $for = ''): string => '<div class="row mb-3" id="leave-form-field-' . $name . '-row"><label for="leave-form-field-' . $name . $for . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
             <?php if ($forSelf): ?><input type="hidden" name="person" value="<?= (int) $me ?>"><?php else:
-                $po = ''; foreach ($people as $p) { $po .= '<option value="' . (int) $p['member_id'] . '"' . ((int) ($v['member_id'] ?? $me) === (int) $p['member_id'] ? ' selected' : '') . '>' . e($p['display_name']) . ((int) $p['member_id'] === (int) $me ? ' (you)' : '') . '</option>'; }
-                echo $field('person', 'For', '<select name="person" id="leave-form-field-person" class="form-select">' . $po . '</select>');
+                echo $field('person', 'For', picker_field(['id' => 'leave-form-field-person', 'name' => 'person', 'source' => 'employee', 'value' => $v['member_id'] ?? $me, 'required' => true,
+                    'title' => 'Who is the leave for?', 'search' => 'Search people…', 'labelledby' => 'leave-form-field-person-label']), '-open');
             endif; ?>
             <?php $to = '<option value="">Choose…</option>'; foreach ($types as $t) { $to .= '<option value="' . (int) $t['leave_type_id'] . '"' . ((int) ($v['leave_type_id'] ?? 0) === (int) $t['leave_type_id'] ? ' selected' : '') . '>' . e($t['name']) . ($t['requires_approval'] ? '' : ' (no approval needed)') . ($t['accrual_days_per_year'] !== null ? ' · ' . e(days_label($t['accrual_days_per_year'])) . ' days a year' : '') . '</option>'; } ?>
             <?= $field('leave_type', 'Leave type', '<select name="leave_type" id="leave-form-field-leave_type" class="form-select" required>' . $to . '</select>') ?>

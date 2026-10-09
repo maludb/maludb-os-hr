@@ -68,11 +68,10 @@
                     <form method="post" action="/people/membership-save.php" class="row g-2 align-items-end" id="membership-form" hx-post="/people/membership-save.php" hx-target="#page-content" hx-swap="innerHTML">
                         <?= csrf_field() ?><input type="hidden" name="department" value="<?= $id ?>">
                         <div class="col-md-6">
-                            <label class="form-label fs-12 text-muted" for="membership-form-field-person">Add a member</label>
-                            <select name="person" id="membership-form-field-person" class="form-select" required>
-                                <option value="">Choose…</option>
-                                <?php foreach ($addable as $a): ?><option value="<?= (int) $a['member_id'] ?>"><?= e($a['display_name']) ?><?= $a['member_kind'] === 'agent' ? ' (agent)' : '' ?></option><?php endforeach; ?>
-                            </select>
+                            <label class="form-label fs-12 text-muted" id="membership-form-field-person-label" for="membership-form-field-person-open">Add a member</label>
+                            <?= picker_field(['id' => 'membership-form-field-person', 'name' => 'person', 'source' => 'department_candidate', 'value' => '', 'required' => true,
+                                'title' => 'Add a member', 'placeholder' => 'Choose a person or agent', 'search' => 'Search people and agents…',
+                                'params' => ['department_id' => $id], 'labelledby' => 'membership-form-field-person-label']) ?>
                         </div>
                         <div class="col-md-2"><div class="form-check"><input type="checkbox" name="is_admin" value="1" id="membership-form-field-is_admin" class="form-check-input"><label class="form-check-label fs-12" for="membership-form-field-is_admin">Admin</label></div></div>
                         <div class="col-md-2"><div class="form-check"><input type="checkbox" name="is_primary" value="1" id="membership-form-field-is_primary" class="form-check-input"><label class="form-check-label fs-12" for="membership-form-field-is_primary">Primary</label></div></div>

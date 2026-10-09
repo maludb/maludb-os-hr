@@ -21,9 +21,9 @@
         <?= view('shared/validation-errors.php', ['errors' => $errors]) ?>
         <form method="post" action="/leave/balances/save.php" id="balance-form" hx-post="/leave/balances/save.php" hx-target="#page-content" hx-swap="innerHTML" hx-confirm="Set this balance?">
             <?= csrf_field() ?>
-            <?php $field = static fn (string $name, string $label, string $input): string => '<div class="row mb-3" id="balance-form-field-' . $name . '-row"><label for="balance-form-field-' . $name . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
-            <?php $po = '<option value="">Choose…</option>'; foreach ($people as $p) { $po .= '<option value="' . (int) $p['member_id'] . '"' . ((int) ($v['member_id'] ?? 0) === (int) $p['member_id'] ? ' selected' : '') . '>' . e($p['display_name']) . '</option>'; } ?>
-            <?= $field('person', 'Person', '<select name="person" id="balance-form-field-person" class="form-select" required>' . $po . '</select>') ?>
+            <?php $field = static fn (string $name, string $label, string $input, string $for = ''): string => '<div class="row mb-3" id="balance-form-field-' . $name . '-row"><label for="balance-form-field-' . $name . $for . '" class="col-lg-4 col-form-label fs-12 text-muted">' . e($label) . '</label><div class="col-lg-8">' . $input . '</div></div>'; ?>
+            <?= $field('person', 'Person', picker_field(['id' => 'balance-form-field-person', 'name' => 'person', 'source' => 'employee', 'value' => $v['member_id'] ?? '', 'required' => true,
+                'placeholder' => 'Choose a person', 'search' => 'Search people…', 'labelledby' => 'balance-form-field-person-label']), '-open') ?>
             <?php $to = '<option value="">Choose…</option>'; foreach ($types as $t) { if ($t['accrual_days_per_year'] === null) { continue; } $to .= '<option value="' . (int) $t['leave_type_id'] . '"' . ((int) ($v['leave_type_id'] ?? 0) === (int) $t['leave_type_id'] ? ' selected' : '') . '>' . e($t['name']) . '</option>'; } ?>
             <?= $field('leave_type', 'Leave type', '<select name="leave_type" id="balance-form-field-leave_type" class="form-select" required>' . $to . '</select>') ?>
             <?= $field('year', 'Year', '<input type="number" name="year" id="balance-form-field-year" class="form-control" min="2000" max="2200" required value="' . e($v['year']) . '">') ?>
