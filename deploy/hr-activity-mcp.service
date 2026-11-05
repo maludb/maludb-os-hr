@@ -1,5 +1,5 @@
 [Unit]
-Description=HR activity MCP server (FastMCP, loopback :8822)
+Description=HR activity MCP server (FastMCP, loopback :{{MCP_ACTIVITY_PORT}})
 After=network.target postgresql.service
 
 [Service]
